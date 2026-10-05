@@ -1,0 +1,36 @@
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --test test/gate.test.mjs
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Good page passes
+        uses: ./
+        with:
+          paths: "test/site/index.html"
+          base-url: "https://acme.example"
+          min-score: "80"
+      - name: Bare page fails as expected
+        id: bare
+        continue-on-error: true
+        uses: ./
+        with:
+          paths: "test/site/about/*.html"
+          min-score: "80"
+      - name: Check the bare page failed
+        run: test "${{ steps.bare.outcome }}" = "failure"

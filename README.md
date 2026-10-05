@@ -13,7 +13,7 @@ You get:
 
 - The OnPage.dev MCP server with 11 tools: scan pages and unpublished HTML, ready-to-paste fixes, structured data, robots.txt rules for AI crawlers, llms.txt and more.
 - `/seo-check [url or path]`: scan a live page or this project's built HTML and fix what is wrong.
-- `/ai-visibility <url>`: check whether ChatGPT, Claude, Perplexity and Gemini can read and quote the site, and write the files to fix it.
+- `/ai-visibility`: check whether ChatGPT, Claude, Perplexity and Gemini can read and quote the site, and write the files to fix it.
 - Skills that run the loop on their own: fix in the source, check with `scan_html` before deploying, confirm with `rescan_and_compare` after.
 
 Only want the server? `claude mcp add --transport http onpage https://onpage.dev/mcp`
