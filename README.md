@@ -12,13 +12,14 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="11 tools" src="https://img.shields.io/badge/tools-11-4f46e5">
+  <img alt="16 tools" src="https://img.shields.io/badge/tools-16-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
 
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
+  <a href="#built-for-agents">Built for agents</a> ·
   <a href="#what-it-can-do">Tools</a> ·
   <a href="#why-it-is-different">Why it is different</a> ·
   <a href="#claude-code-plugin">Claude Code plugin</a> ·
@@ -42,6 +43,16 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
 
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
+
+## Built for agents
+
+What makes OnPage.dev different from every other SEO MCP server:
+
+- **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
+- **It checks the code the agent writes.** `scan_html`, `validate_schema` and `compare_html` test new HTML and JSON-LD before it ships, and catch regressions such as a stray `noindex` or a removed canonical.
+- **Launch and migration built in.** `check_urls` follows every redirect chain for up to 20 URLs at once; `test_robots` answers "may this bot fetch this URL" with Google's own matching rules, including `*` and `$` wildcards.
+- **No made-up advice.** The `onpage://rules` resource gives the assistant every check, threshold and fix, so it explains SEO from the same rules the scanner uses.
+- **Free and hosted.** Paste one URL. No account, no API key, no install.
 
 ## Install in one minute
 
@@ -107,13 +118,14 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-11 tools in three jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev).
+16 tools in four jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
 | Tool | What it does | Example result |
 |---|---|---|
 | `scan_page` | Score from 0 to 100, the issues to fix first with why and how, AI readiness and key facts | `46/100, 5 fixes` |
+| `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
 | `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
@@ -127,11 +139,20 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `ai_crawler_policy` | robots.txt rules for 13 AI crawlers from a policy (allow all, AI search only, block all), merged into your existing file | `13 bots, merged` |
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
 
+### Launch and migration
+
+| Tool | What it does | Example result |
+|---|---|---|
+| `check_urls` | Status codes and full redirect chains for up to 20 URLs, checked against where each should land. Flags chains and temporary redirects | `19 of 20 OK` |
+| `test_robots` | May Googlebot, GPTBot, ClaudeBot or any crawler fetch this URL? Uses Google's matching rules and returns the exact deciding rule. Can test a proposed robots.txt too | `Blocked by "Disallow: /search?"` |
+
 ### Writing and code
 
 | Tool | What it does | Example result |
 |---|---|---|
 | `scan_html` | Scan HTML that is not live yet: a local build, a template or a draft. Same score and fixes as `scan_page` | `92/100 before deploy` |
+| `compare_html` | SEO diff between two versions of a page: score, issues fixed and introduced (by code), and changes to title, description, H1, canonical, robots and structured data | `72 → 18, noindex added` |
+| `validate_schema` | Check JSON-LD you wrote: syntax, @context and @type, ISO dates, absolute URLs, placeholders and Google's required fields | `2 errors, 3 warnings` |
 | `check_focus_keyword` | Eight checks for one search term: title, description, H1, URL, opening text, subheadings, alt texts and keyword use | `6 of 8` |
 | `check_snippet` | Pixel-width estimate of title and description against Google's cut-off, desktop and mobile | `612 px, cut off` |
 
@@ -144,6 +165,10 @@ One click in clients that show prompts:
 - **Launch checklist**: a tick or cross for everything a page needs before going live.
 - **AI visibility makeover**: robots.txt, llms.txt and answer passages in one go.
 - **Pre-deploy SEO gate**: scan the built HTML and block the release below a minimum score.
+
+### Reference resource
+
+`onpage://rules`: every check with its stable code, why it matters and how to fix it, plus the key thresholds (title and description length in pixels, word counts, alt text, server response, AI answer length).
 
 ### Score card in the chat
 
@@ -158,7 +183,9 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Price | Free | Paid plan or API credits | Free |
 | Setup | Paste one URL | Account and key | Install and run yourself, often extra API keys |
 | Built for | Acting on results: fix, check before deploy, confirm | Research data: keywords, backlinks, rankings | Audits and reports |
-| Scan unpublished HTML | Yes, `scan_html` | No | Rarely |
+| Scan unpublished HTML | Yes, `scan_html` and `compare_html` | No | Rarely |
+| Agent-grade output | Stable issue codes, output schemas, rules resource | Data rows | Varies |
+| Migration checks | Redirect chains, robots.txt tester | Partly | Partly |
 | AI search tools | Crawler access, AI-answer checks, robots.txt policy, llms.txt | AI visibility tracking on some | Rarely |
 | Ready code | Fix pack, JSON-LD, robots.txt, llms.txt | No | Varies |
 
@@ -170,6 +197,8 @@ What OnPage.dev does not do: search volumes, rankings or backlinks. For those, t
 Why does ChatGPT never mention example.com? Check it with OnPage.dev.
 Scan our pricing page and give me the five fixes with the code.
 Let ChatGPT search read our site but block AI training. Write the robots.txt.
+We moved to a new URL structure. Check that these 20 old URLs redirect to the right new pages.
+Review this pull request for SEO regressions: compare the old and new HTML of the changed pages.
 Does our blog post answer "how long does shipping to Germany take" well enough for AI to quote?
 Write three title options for this page and check which ones fit in Google.
 Fix the SEO issues in this project, check the build with OnPage.dev and keep going until it scores 95.

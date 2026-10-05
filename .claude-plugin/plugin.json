@@ -1,9 +1,19 @@
 {
   "name": "onpage",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Free SEO and AI-visibility checks inside Claude Code: scan pages and unpublished HTML, get ready-to-paste fixes, and verify them before and after deploy. Powered by the hosted OnPage.dev MCP server, no account or key.",
-  "author": { "name": "OnPage.dev", "url": "https://onpage.dev" },
+  "author": {
+    "name": "OnPage.dev",
+    "url": "https://onpage.dev"
+  },
   "homepage": "https://onpage.dev/mcp",
   "license": "MIT",
-  "keywords": ["seo", "ai-visibility", "llms-txt", "robots-txt", "structured-data", "mcp"]
+  "keywords": [
+    "seo",
+    "ai-visibility",
+    "llms-txt",
+    "robots-txt",
+    "structured-data",
+    "mcp"
+  ]
 }
