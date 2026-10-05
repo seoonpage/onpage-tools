@@ -6,6 +6,8 @@ test('glob patterns match nested html files', () => {
   assert.ok(globToRegExp('dist/**/*.html').test('dist/index.html'));
   assert.ok(globToRegExp('dist/**/*.html').test('dist/a/b/index.html'));
   assert.ok(!globToRegExp('dist/*.html').test('dist/a/index.html'));
+  assert.deepEqual(findFiles('test/site/index.html'), ['test/site/index.html']);
+  assert.deepEqual(findFiles('test/site/missing.html'), []);
   assert.deepEqual(findFiles('test/site/**/*.html').map((f) => f.replace(/\\/g, '/')), ['test/site/about/index.html', 'test/site/index.html']);
 });
 

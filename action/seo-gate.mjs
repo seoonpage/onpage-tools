@@ -42,7 +42,13 @@ export function findFiles(glob, root = '.') {
       else if (re.test(relative(root, path).split(sep).join('/'))) out.push(path);
     }
   };
-  walk(join(root, start));
+  const first = join(root, start);
+  let isFile = false;
+  try {
+    isFile = statSync(first).isFile();
+  } catch {}
+  if (isFile) return re.test(relative(root, first).split(sep).join('/')) ? [first] : [];
+  walk(first);
   return out;
 }
 
