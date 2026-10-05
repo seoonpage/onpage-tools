@@ -1,0 +1,42 @@
+name: OnPage.dev SEO gate
+description: Scan the HTML your build produces for SEO and AI readiness, comment the results on the pull request and fail below a minimum score. Free, no key.
+author: OnPage.dev
+branding:
+  icon: check-circle
+  color: purple
+inputs:
+  paths:
+    description: Glob for the built HTML files to check, for example "dist/**/*.html".
+    default: "dist/**/*.html"
+  base-url:
+    description: Address the site will be published at, for example https://example.com. Used for canonical and relative link checks.
+    default: ""
+  min-score:
+    description: Fail the check when any page scores below this (0 to 100).
+    default: "80"
+  max-files:
+    description: Most files to scan per run. Scans are rate limited to about 20 per minute.
+    default: "10"
+  comment:
+    description: Post or update a comment with the results on pull requests.
+    default: "true"
+  github-token:
+    description: Token used to post the pull request comment.
+    default: ${{ github.token }}
+outputs:
+  min-score:
+    description: The lowest score found.
+    value: ${{ steps.gate.outputs.min-score }}
+runs:
+  using: composite
+  steps:
+    - id: gate
+      shell: bash
+      run: node "${{ github.action_path }}/action/seo-gate.mjs"
+      env:
+        INPUT_PATHS: ${{ inputs.paths }}
+        INPUT_BASE_URL: ${{ inputs.base-url }}
+        INPUT_MIN_SCORE: ${{ inputs.min-score }}
+        INPUT_MAX_FILES: ${{ inputs.max-files }}
+        INPUT_COMMENT: ${{ inputs.comment }}
+        INPUT_TOKEN: ${{ inputs.github-token }}

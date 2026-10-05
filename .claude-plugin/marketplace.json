@@ -1,0 +1,13 @@
+{
+  "name": "onpage-dev",
+  "owner": { "name": "OnPage.dev", "url": "https://onpage.dev" },
+  "metadata": { "description": "OnPage.dev tools for Claude Code: free SEO and AI-visibility scanning, fixing and verification." },
+  "plugins": [
+    {
+      "name": "onpage",
+      "source": "./",
+      "description": "Free SEO and AI-visibility checks inside Claude Code, with a fix and verify loop before and after deploy.",
+      "category": "development"
+    }
+  ]
+}

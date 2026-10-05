@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "onpage": { "type": "http", "url": "https://onpage.dev/mcp" }
+  }
+}
