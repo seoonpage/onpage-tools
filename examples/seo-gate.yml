@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci && npm run build
-      - uses: OWNER/onpage-tools@v1
+      - uses: seoonpage/onpage-tools@v1
         with:
           paths: "dist/**/*.html"
           base-url: "https://example.com"

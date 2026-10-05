@@ -5,7 +5,7 @@ Free SEO and AI-visibility checks where you build: in Claude Code and in your CI
 ## Claude Code plugin
 
 ```
-/plugin marketplace add OWNER/onpage-tools
+/plugin marketplace add seoonpage/onpage-tools
 /plugin install onpage@onpage-dev
 ```
 
@@ -23,7 +23,7 @@ Only want the server? `claude mcp add --transport http onpage https://onpage.dev
 Scans the HTML your build produces on every pull request, comments the scores and top fixes, and fails when a page drops below your minimum.
 
 ```yaml
-- uses: OWNER/onpage-tools@v1
+- uses: seoonpage/onpage-tools@v1
   with:
     paths: "dist/**/*.html"     # built HTML to check
     base-url: "https://example.com"  # optional, for canonical and relative links
