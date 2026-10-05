@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="16 tools" src="https://img.shields.io/badge/tools-16-4f46e5">
+  <img alt="20 tools" src="https://img.shields.io/badge/tools-20-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -51,6 +51,8 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
 - **It checks the code the agent writes.** `scan_html`, `validate_schema` and `compare_html` test new HTML and JSON-LD before it ships, and catch regressions such as a stray `noindex` or a removed canonical.
 - **Launch and migration built in.** `check_urls` follows every redirect chain for up to 20 URLs at once; `test_robots` answers "may this bot fetch this URL" with Google's own matching rules, including `*` and `$` wildcards.
+- **Whole sites, step by step.** `start_site_audit` runs as a job the agent works through, so a 25-page audit fits a free hosted service. It reports issues across the site by code, broken and orphan pages and duplicates.
+- **You vs the pages that rank.** `compare_pages` puts a page next to up to 3 competitors with content gaps and fixes to catch up; `suggest_internal_links` shows which pages should link where.
 - **No made-up advice.** The `onpage://rules` resource gives the assistant every check, threshold and fix, so it explains SEO from the same rules the scanner uses.
 - **Free and hosted.** Paste one URL. No account, no API key, no install.
 
@@ -118,7 +120,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-16 tools in four jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+20 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -129,6 +131,15 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
+
+### Whole site and competitors
+
+| Tool | What it does | Example result |
+|---|---|---|
+| `start_site_audit` | Audit up to 25 pages from the sitemap as a job. Returns an `audit_id` and the first progress | `3 of 25 scanned` |
+| `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
+| `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
+| `compare_pages` | A page next to up to 3 competitors: side by side, content gaps, structured data they have and fixes to catch up. Flags cookie walls | `You lead on 12 of 14` |
 
 ### AI search
 
@@ -186,6 +197,8 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Scan unpublished HTML | Yes, `scan_html` and `compare_html` | No | Rarely |
 | Agent-grade output | Stable issue codes, output schemas, rules resource | Data rows | Varies |
 | Migration checks | Redirect chains, robots.txt tester | Partly | Partly |
+| Whole-site audit | Up to 25 pages, free, as a job | Yes, paid | Yes, self-run |
+| Competitor gaps | Page vs page, with content gaps | Keyword and backlink gaps | Rarely |
 | AI search tools | Crawler access, AI-answer checks, robots.txt policy, llms.txt | AI visibility tracking on some | Rarely |
 | Ready code | Fix pack, JSON-LD, robots.txt, llms.txt | No | Varies |
 
@@ -199,6 +212,9 @@ Scan our pricing page and give me the five fixes with the code.
 Let ChatGPT search read our site but block AI training. Write the robots.txt.
 We moved to a new URL structure. Check that these 20 old URLs redirect to the right new pages.
 Review this pull request for SEO regressions: compare the old and new HTML of the changed pages.
+Audit our whole site and tell me the three fixes that help the most pages at once.
+We are writing a page about trail running shoes. Which of our pages should link to it?
+How does our pricing page compare with these two competitors, and what are we missing?
 Does our blog post answer "how long does shipping to Germany take" well enough for AI to quote?
 Write three title options for this page and check which ones fit in Google.
 Fix the SEO issues in this project, check the build with OnPage.dev and keep going until it scores 95.
