@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="37 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
+  <img alt="38 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -55,7 +55,7 @@ Most SEO tools stop at a report. OnPage.dev gives an agent every step, and each 
 
 | Step | What happens | Tools |
 |---|---|---|
-| **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes`, `match_intent` |
+| **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes`, `match_intent`, `check_readability` |
 | **Fix** | Ready code from the page's own content: tags, JSON-LD, robots.txt, llms.txt, redirect rules | `get_fix_pack`, `generate_schema`, `ai_crawler_policy`, `plan_redirects` |
 | **Check** | The new HTML and JSON-LD tested before deploy, then confirmed live | `scan_html`, `validate_schema`, `compare_html`, `rescan_and_compare` |
 | **Act** | The plan sent to Google Sheets, Slack, Notion or the task board | `export_findings`, `share_result` |
@@ -172,6 +172,17 @@ Assistant:  (Ahrefs) serp-overview   top 7 results
 - **Forums and videos:** recognised from the address, without scraping them, and turned into concrete advice about experience and trust.
 - **The whole site:** pass Search Console rows and it finds queries where two of your pages compete with each other, and pages that attract mixed intents.
 
+### Readability that fits the page
+
+A product page should not read like documentation. `check_readability` measures reading ease (Flesch, or Flesch-Douma for Dutch) against the right target: the median of the pages that rank for the keyword, or the common norm for the page type when there are no competitors. It lists the hardest sentences and paragraphs to rewrite first, ignoring menus, link lists and tables.
+
+```
+Assistant:  check_readability   Reading ease 63, ranking pages median 52 (52, 63, 49)
+            Hardest sentence (22 words, score 8):
+            "Runner's World Running Reviews Editor, Amanda Furrer, who has
+             relatively low arches, researched shoe testing data from..."
+```
+
 ## Keeps watching after you ship
 
 Most SEO problems are not there on launch day. They arrive later: a deploy adds `noindex`, a CMS update changes the canonical, a new robots.txt blocks GPTBot. `watch_page` rechecks a page about once a day and records every change for search and AI. Alerts go to a private RSS feed and, if you give one, a Slack or Discord webhook. No account, no key.
@@ -279,7 +290,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-37 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+38 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -304,6 +315,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
 | `match_intent` | Does the page match search intent? Scans the top results you pass (from Ahrefs or Semrush), works out the page type Google ranks (guide, listicle, product, category, service, forum, video and more) and the format that ranks. With Search Console rows: pages that compete for the same query | `Mismatch: results are listicles, yours is a product page` |
+| `check_readability` | Reading ease (Flesch, Flesch-Douma for Dutch) against the pages that rank or the norm for the page type, average sentence length, long sentences, and the hardest sentences and paragraphs to rewrite | `63 vs 52 for ranking pages` |
 | `compare_pages` | A page next to up to 3 competitors: side by side, content gaps, structured data they have and fixes to catch up. Flags cookie walls | `You lead on 12 of 14` |
 
 ### AI search
