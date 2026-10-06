@@ -155,6 +155,10 @@ What makes OnPage.dev different from every other SEO MCP server:
 
 ## Install in one minute
 
+[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-0b0b0f?style=for-the-badge)](https://cursor.com/install-mcp?name=onpage&config=eyJ1cmwiOiJodHRwczovL29ucGFnZS5kZXYvbWNwIn0%3D) [![Add to VS Code](https://img.shields.io/badge/Add%20to-VS%20Code-0078d4?style=for-the-badge)](https://vscode.dev/redirect/mcp/install?name=onpage&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fonpage.dev%2Fmcp%22%7D)
+
+One click for Cursor and VS Code. For Claude, ChatGPT and other clients, see below.
+
 The server is hosted. There is nothing to install or run, and no key.
 
 **Server URL:** `https://onpage.dev/mcp`
