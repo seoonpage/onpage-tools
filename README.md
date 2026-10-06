@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="36 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
+  <img alt="37 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -55,7 +55,7 @@ Most SEO tools stop at a report. OnPage.dev gives an agent every step, and each 
 
 | Step | What happens | Tools |
 |---|---|---|
-| **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes` |
+| **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes`, `match_intent` |
 | **Fix** | Ready code from the page's own content: tags, JSON-LD, robots.txt, llms.txt, redirect rules | `get_fix_pack`, `generate_schema`, `ai_crawler_policy`, `plan_redirects` |
 | **Check** | The new HTML and JSON-LD tested before deploy, then confirmed live | `scan_html`, `validate_schema`, `compare_html`, `rescan_and_compare` |
 | **Act** | The plan sent to Google Sheets, Slack, Notion or the task board | `export_findings`, `share_result` |
@@ -147,6 +147,30 @@ How it works: an MCP server cannot read other connectors, and should not. OnPage
 With Ahrefs Brand Radar (or any source of AI citation counts) connected, `compare_ai_citations` puts the pages ChatGPT, Perplexity, Gemini and Google AI cite next to the ones they skip. OnPage.dev scans every page and shows which checks the cited pages pass and the others fail, the averages side by side (AI readiness, words, facts per 100 words, outside sources, entity graph issues), and what each skipped page should change. It is honest about the limits: a correlation over a few pages, not proof of cause.
 
 What `prioritize_fixes` looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
+
+## Matches search intent
+
+The fastest way to waste a month: write a product page for a keyword where Google only ranks guides. `match_intent` checks what actually ranks before you write.
+
+Your agent pulls the top results for the keyword from Ahrefs or Semrush, and OnPage.dev scans every one of them and works out the page type Google rewards: guide, listicle or comparison, product page, category page, service page, tool, local business page, news article, recipe, help page, pricing page, forum or video.
+
+```
+You:        Does our page fit "best running shoes for flat feet"?
+
+Assistant:  (Ahrefs) serp-overview   top 7 results
+            match_intent             8 pages read
+
+            Your page fits: Google ranks listicles here (runrepeat, rtings),
+            and yours is one too.
+            4 of 7 results are forums (Reddit, JustAnswer): searchers want
+            real experience. Add first-hand testing, photos and named experts.
+            43% of the top results put the year in the title.
+```
+
+- **Page type match:** match, close (same intent, other format) or mismatch, with the evidence per result.
+- **Format that ranks:** median length and subheadings of the top results, how many have a FAQ, a year or a number in the title.
+- **Forums and videos:** recognised from the address, without scraping them, and turned into concrete advice about experience and trust.
+- **The whole site:** pass Search Console rows and it finds queries where two of your pages compete with each other, and pages that attract mixed intents.
 
 ## Keeps watching after you ship
 
@@ -255,7 +279,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-36 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+37 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -279,6 +303,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
+| `match_intent` | Does the page match search intent? Scans the top results you pass (from Ahrefs or Semrush), works out the page type Google ranks (guide, listicle, product, category, service, forum, video and more) and the format that ranks. With Search Console rows: pages that compete for the same query | `Mismatch: results are listicles, yours is a product page` |
 | `compare_pages` | A page next to up to 3 competitors: side by side, content gaps, structured data they have and fixes to catch up. Flags cookie walls | `You lead on 12 of 14` |
 
 ### AI search
