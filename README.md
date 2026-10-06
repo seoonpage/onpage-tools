@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="34 tools" src="https://img.shields.io/badge/tools-34-4f46e5">
+  <img alt="35 tools" src="https://img.shields.io/badge/tools-35-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -20,6 +20,7 @@
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
   <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
+  <a href="#from-finding-to-done">From finding to done</a> ·
   <a href="#seen-by-every-reader">Every reader</a> ·
   <a href="#keeps-watching-after-you-ship">Watch and alerts</a> ·
   <a href="#built-for-agents">Built for agents</a> ·
@@ -46,6 +47,26 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
 
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
+
+## From finding to done
+
+Most SEO tools stop at a report. OnPage.dev hands the plan to the tools your team already works in, so fixes get assigned and shipped. `export_findings` turns a page scan or a whole site audit into:
+
+- **Google Sheets**: one row per finding with priority, page, issue, fix, code and status. Every export comes with a private CSV link, so `=IMPORTDATA("https://onpage.dev/export/….csv")` loads it into a sheet with **no connector at all**.
+- **Slack, Teams or Discord**: a ready summary with the fixes that matter most, posted by the agent's Slack tool or straight to an incoming webhook.
+- **Linear, Jira, Asana, Trello or GitHub Issues**: one task per issue, grouped across pages, with priority, labels and how to fix it.
+- **Notion or Confluence**: a Markdown checklist.
+
+```
+You:        Audit example.com, put every fix in a Google Sheet and post the summary in #seo.
+
+Assistant:  start_site_audit     25 pages, 41 findings
+            export_findings      sheet link, Slack message, 12 tasks
+            (Google Sheets)      rows added to "SEO fixes"
+            (Slack)              posted to #seo
+```
+
+OnPage.dev never logs in to Slack, Google or your task board: the agent sends the plan with the tools the user already connected, or you paste one formula. Scan results and audits end with a hint, so agents offer the export on their own.
 
 ## Seen by every reader
 
@@ -118,6 +139,7 @@ And three more jobs agents get asked to do every week:
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **From finding to done.** `export_findings` sends the plan to Google Sheets (no connector needed), Slack, Notion or a task board. [More](#from-finding-to-done).
 - **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
 - **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
 - **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
@@ -195,7 +217,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-34 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+35 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -207,6 +229,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
+| `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
 | `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors
@@ -292,6 +315,7 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
 | Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
 | Screen reader view | Accessibility tree read aloud, unnamed controls flagged | No | Rarely |
+| From findings to tasks | Google Sheets, Slack, Notion and task boards, no connector needed for Sheets | Exports to CSV or PDF | Rarely |
 | Migration redirect map | Old to new with confidence, ready rules | No | Rarely |
 
 What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.

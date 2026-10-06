@@ -26,6 +26,9 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - When URLs change, call `check_urls` on the old URLs with the new ones as `expected`, and `test_robots` on key pages.
 - After the user deploys, call `rescan_and_compare` on the live URL to confirm what got fixed and catch anything new.
 
+## Hand it to the team
+- When the user wants to share or plan the work, call `export_findings` with the url or audit_id. If Google Sheets, Slack, Notion or a task board tool is connected, send the output there; otherwise give the `=IMPORTDATA` formula.
+
 ## Whole sites and competitors
 - For a whole site, call `start_site_audit`, then `get_site_audit` with the returned id until status is complete. Fix the issues that affect the most pages first.
 - For orphan pages or new content, call `suggest_internal_links` with the audit id and add the links in body text.
