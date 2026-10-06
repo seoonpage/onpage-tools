@@ -10,6 +10,7 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 ## 1. Measure
 - Published page: call `scan_page` with its URL.
 - Traffic first: if a Google Search Console, GA4, Ahrefs or Semrush tool is available, fetch the site's top pages (clicks, impressions, position, traffic, referring domains) and top queries, at most 10 pages and 20 queries each, and call `prioritize_fixes` with them. Work through its list in order. Without such a tool, skip this.
+- What visitors and assistive tech get: call `render_page` for the first screen on phone, tablet and desktop (H1 and call to action above the fold, cookie walls, tap targets, JavaScript-only content) and `screen_reader_view` for links, buttons and images without a name. With your own browser tool, use `get_layout_probe` and `analyze_layout` instead.
 - Unpublished work: build the project if that is cheap, read the generated HTML and call `scan_html` with it. Pass the future URL as `url` when known so canonical and relative links are judged correctly.
 
 ## 2. Fix in the source, not in the build output

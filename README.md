@@ -361,18 +361,18 @@ The pull request gets a comment like this, updated on every push:
 
 ## Security and privacy
 
-- **Read-only.** Every tool only reads public pages or the HTML you send. Nothing is changed anywhere.
+- **Nothing changes on your site.** Every tool only reads public pages or the HTML you send. Watches and shared result pages store scores and issue names, never page content.
 - **Public pages only.** Private, internal and local network addresses are refused (SSRF protection), and so are non-web schemes.
 - **No storage of content.** HTML sent to `scan_html` is analysed in memory and dropped. For change tracking, only the score and issue names are kept, under a hashed key, for up to 30 days.
 - **Your traffic data stays yours.** Numbers passed to `prioritize_fixes` are used for that answer only. OnPage.dev never connects to Search Console, GA4, Ahrefs or Semrush itself.
 - **Prompt injection aware.** Text from scanned pages is returned as data and marked as such.
-- **Fair use limits.** About 20 scans per minute per connection, plus a shared cap. No accounts, no keys, no tracking cookies.
+- **Fair use limits.** About 20 scans per minute per connection, plus a shared cap. Real-browser checks (`render_page`, `screen_reader_view`) share a daily budget; with your own browser tool, `get_layout_probe` has no limit. No accounts, no keys, no tracking cookies.
 
 Full details: [onpage.dev/privacy](https://onpage.dev/privacy) and [onpage.dev/terms](https://onpage.dev/terms).
 
-## Limits
+## Good to know
 
-- Reads the HTML a server returns. JavaScript is not run, so content that only appears in the browser is not seen.
+- The main scan reads the HTML a server returns, the way Google and AI crawlers do. `render_page` and `screen_reader_view` add a real browser, with and without JavaScript, so content that only appears in the browser is covered too.
 - Link checks, image sizes and AI crawler access need a live URL, so `scan_html` skips them.
 - Pixel widths in `check_snippet` are an estimate; Google can also rewrite snippets.
 
