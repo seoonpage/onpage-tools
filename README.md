@@ -100,6 +100,13 @@ Google reads your HTML. Visitors see one screen on a phone. Screen readers, and 
 
 **`render_page`** loads the page on a phone, tablet and desktop and checks the first screen: is the H1 and the call to action visible without scrolling, does a cookie wall or pop-up cover it, are tap targets big enough, what shifts while loading. It loads the page again with JavaScript off to show what GPTBot and ClaudeBot miss, and checks whether the first screen delivers what the Google snippet promises. With screenshots.
 
+It also checks **design and readability**, the details that make a page look professional and easy to read:
+
+- Text with too little contrast, measured against its real background (WCAG AA: 4.5:1, or 3:1 for large text), with the colours to fix.
+- The exact element that makes the page scroll sideways on a phone, and by how many pixels.
+- Mixed button styles: how many corner styles and heights the buttons use.
+- Uneven spacing between sections.
+
 **`screen_reader_view`** reads the page the way a screen reader announces it:
 
 ```
@@ -262,7 +269,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
 | `measure_impact` | Before and after numbers from Search Console, GA4, Ahrefs or Semrush for the changed pages, against unchanged pages as a control group, with what changed per page from the watch history | `+66% clicks vs control` |
-| `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
+| `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, low-contrast text, what scrolls sideways, mixed buttons, uneven spacing, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors
 
