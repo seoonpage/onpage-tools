@@ -3,7 +3,7 @@
   "name": "dev.onpage/onpage",
   "title": "OnPage.dev",
   "description": "Free hosted SEO and AI-visibility scanner for agents: scan, fix, verify, redirects, robots.txt.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "websiteUrl": "https://onpage.dev/mcp",
   "repository": {
     "url": "https://github.com/seoonpage/onpage-tools",

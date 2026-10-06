@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="35 tools" src="https://img.shields.io/badge/tools-35-4f46e5">
+  <img alt="36 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -20,6 +20,7 @@
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
   <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
+  <a href="#the-whole-loop-inside-your-ai-agent">The whole loop</a> ·
   <a href="#from-finding-to-done">From finding to done</a> ·
   <a href="#seen-by-every-reader">Every reader</a> ·
   <a href="#keeps-watching-after-you-ship">Watch and alerts</a> ·
@@ -47,6 +48,31 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
 
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
+
+## The whole loop, inside your AI agent
+
+Most SEO tools stop at a report. OnPage.dev gives an agent every step, and each step is a tool it can call:
+
+| Step | What happens | Tools |
+|---|---|---|
+| **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes` |
+| **Fix** | Ready code from the page's own content: tags, JSON-LD, robots.txt, llms.txt, redirect rules | `get_fix_pack`, `generate_schema`, `ai_crawler_policy`, `plan_redirects` |
+| **Check** | The new HTML and JSON-LD tested before deploy, then confirmed live | `scan_html`, `validate_schema`, `compare_html`, `rescan_and_compare` |
+| **Act** | The plan sent to Google Sheets, Slack, Notion or the task board | `export_findings`, `share_result` |
+| **Watch** | A daily check that alerts when something breaks again | `watch_page` |
+| **Measure** | Search Console, GA4 or Ahrefs numbers from before and after, against pages you did not touch | `measure_impact` |
+
+```
+Four weeks later...
+
+You:        Did the fixes on /pricing and /features work?
+
+Assistant:  (Search Console)     clicks for 28 days before and after 8 September
+            measure_impact       changed pages +70%, unchanged pages +3%
+                                 → +66% lift; /features +357% after the stray noindex was removed
+```
+
+`measure_impact` subtracts the trend of the pages you did not change, so seasonality and Google updates are not counted as your result. It is honest about what it shows: a comparison of two periods, not proof.
 
 ## From finding to done
 
@@ -139,6 +165,7 @@ And three more jobs agents get asked to do every week:
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Proves the result.** `measure_impact` compares before and after numbers against a control group of unchanged pages. [More](#the-whole-loop-inside-your-ai-agent).
 - **From finding to done.** `export_findings` sends the plan to Google Sheets (no connector needed), Slack, Notion or a task board. [More](#from-finding-to-done).
 - **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
 - **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
@@ -155,7 +182,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 
 ## Install in one minute
 
-[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-0b0b0f?style=for-the-badge)](https://cursor.com/install-mcp?name=onpage&config=eyJ1cmwiOiJodHRwczovL29ucGFnZS5kZXYvbWNwIn0%3D) [![Add to VS Code](https://img.shields.io/badge/Add%20to-VS%20Code-0078d4?style=for-the-badge)](https://vscode.dev/redirect/mcp/install?name=onpage&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fonpage.dev%2Fmcp%22%7D)
+[![Add to Cursor](https://img.shields.io/badge/Install%20in-Cursor-0b0b0f?style=for-the-badge)](https://cursor.com/install-mcp?name=onpage&config=eyJ1cmwiOiJodHRwczovL29ucGFnZS5kZXYvbWNwIn0%3D) [![Add to VS Code](https://img.shields.io/badge/Install%20in-VS%20Code-0078d4?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=onpage&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fonpage.dev%2Fmcp%22%7D)
 
 One click for Cursor and VS Code. For Claude, ChatGPT and other clients, see below.
 
@@ -221,7 +248,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-35 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+36 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -234,6 +261,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
+| `measure_impact` | Before and after numbers from Search Console, GA4, Ahrefs or Semrush for the changed pages, against unchanged pages as a control group, with what changed per page from the watch history | `+66% clicks vs control` |
 | `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors
@@ -319,6 +347,7 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
 | Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
 | Screen reader view | Accessibility tree read aloud, unnamed controls flagged | No | Rarely |
+| Measures the result | Before and after, with a control group | Rank and traffic charts | Rarely |
 | From findings to tasks | Google Sheets, Slack, Notion and task boards, no connector needed for Sheets | Exports to CSV or PDF | Rarely |
 | Migration redirect map | Old to new with confidence, ready rules | No | Rarely |
 
