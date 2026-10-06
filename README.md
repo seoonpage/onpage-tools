@@ -183,6 +183,29 @@ Assistant:  check_readability   Reading ease 63, ranking pages median 52 (52, 63
              relatively low arches, researched shoe testing data from..."
 ```
 
+## Ships to WordPress
+
+From chat to live, with you approving every change. `get_fix_pack` with `platform: "wordpress"` turns the fixes into a WordPress plan your agent can apply through your own WordPress connection (for example a WordPress MCP server):
+
+```
+You:        Fix the SEO on /trail-shoes and put it live.
+
+Assistant:  scan_page            46: title too short, no meta description, 1 image without alt
+            get_fix_pack         platform: wordpress, 3 changes
+                                 SEO title       -> Yoast _yoast_wpseo_title
+                                 Description     -> Yoast _yoast_wpseo_metadesc
+                                 Alt text        -> media library
+
+            Shall I apply these 3 changes?          You: yes
+            (WordPress) update post + media
+            rescan_and_compare   94, all 3 fixed
+```
+
+- The exact field for each value in Yoast SEO and Rank Math, alt texts for the media library, and structured data as a Custom HTML block.
+- Your agent shows every change as old and new value and waits for your approval before anything goes live.
+- OnPage.dev never logs in to your site and stores no passwords: your own WordPress connection makes every change.
+- Without a WordPress connection, the same plan tells you exactly what to paste where.
+
 ## Keeps watching after you ship
 
 Most SEO problems are not there on launch day. They arrive later: a deploy adds `noindex`, a CMS update changes the canonical, a new robots.txt blocks GPTBot. `watch_page` rechecks a page about once a day and records every change for search and AI. Alerts go to a private RSS feed and, if you give one, a Slack or Discord webhook. No account, no key.
@@ -298,7 +321,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 |---|---|---|
 | `scan_page` | Score from 0 to 100, the issues to fix first with why and how, AI readiness and key facts | `46/100, 5 fixes` |
 | `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
-| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content | `<title>`, `<meta>`, canonical, social tags |
+| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
