@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="23 tools" src="https://img.shields.io/badge/tools-23-4f46e5">
+  <img alt="24 tools" src="https://img.shields.io/badge/tools-24-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -65,13 +65,17 @@ Assistant:  start_site_audit     10 pages, average 81
 
 How it works: an MCP server cannot read other connectors, and should not. OnPage.dev's results and instructions ask the assistant to fetch the numbers from any SEO data tool it has, and the assistant passes them to `prioritize_fixes`. The numbers are used for that answer only and never stored. OnPage.dev never logs in to those services.
 
-What it looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
+### And what AI already cites
+
+With Ahrefs Brand Radar (or any source of AI citation counts) connected, `compare_ai_citations` puts the pages ChatGPT, Perplexity, Gemini and Google AI cite next to the ones they skip. OnPage.dev scans every page and shows which checks the cited pages pass and the others fail, the averages side by side (AI readiness, words, facts per 100 words, outside sources, entity graph issues), and what each skipped page should change. It is honest about the limits: a correlation over a few pages, not proof of cause.
+
+What `prioritize_fixes` looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
 
 ## Built for agents
 
 What makes OnPage.dev different from every other SEO MCP server:
 
-- **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers. [How it works](#uses-the-seo-data-you-already-have).
+- **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
 - **It checks the code the agent writes.** `scan_html`, `validate_schema` and `compare_html` test new HTML and JSON-LD before it ships, and catch regressions such as a stray `noindex` or a removed canonical.
 - **Launch and migration built in.** `check_urls` follows every redirect chain for up to 20 URLs at once; `test_robots` answers "may this bot fetch this URL" with Google's own matching rules, including `*` and `$` wildcards.
@@ -146,7 +150,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-23 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+24 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -178,6 +182,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
 | `validate_llms_txt` | Check an llms.txt against the llmstxt.org format: a real text file (not an HTML soft 404), one title, a summary, sections with `[name](url): notes` links, size, dead links, and whether llms-full.txt exists. Validates drafts too | `Valid, 6 sections, 8 of 8 links load` |
 | `check_entity_graph` | How the structured data describes who is behind a page, the way AI knowledge graphs read it: Organization, author and publisher as linked entities (`@id`), `sameAs` profiles that load, a match with the home page, and the missing JSON-LD with TODOs | `5 entities, 1 fix: no sameAs` |
+| `compare_ai_citations` | AI citation counts per page from Ahrefs Brand Radar or another source, next to OnPage.dev checks: which checks the cited pages pass and the others fail, averages side by side, and what each skipped page should change | `Clear answer first: 100% of cited pages vs 0%` |
 
 ### Launch and migration
 
@@ -231,6 +236,7 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | AI search tools | Crawler access, AI-answer checks, robots.txt policy, llms.txt | AI visibility tracking on some | Rarely |
 | Ready code | Fix pack, JSON-LD, robots.txt, llms.txt | No | Varies |
 | Uses your traffic data | Yes, from GSC, GA4, Ahrefs or Semrush already in the chat | Their own data | Rarely |
+| Explains AI citations | Cited vs skipped pages, checked side by side | Citation counts only | No |
 
 What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.
 
