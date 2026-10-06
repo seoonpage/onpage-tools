@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="21 tools" src="https://img.shields.io/badge/tools-21-4f46e5">
+  <img alt="23 tools" src="https://img.shields.io/badge/tools-23-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -77,6 +77,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Launch and migration built in.** `check_urls` follows every redirect chain for up to 20 URLs at once; `test_robots` answers "may this bot fetch this URL" with Google's own matching rules, including `*` and `$` wildcards.
 - **Whole sites, step by step.** `start_site_audit` runs as a job the agent works through, so a 25-page audit fits a free hosted service. It reports issues across the site by code, broken and orphan pages and duplicates.
 - **You vs the pages that rank.** `compare_pages` puts a page next to up to 3 competitors with content gaps and fixes to catch up; `suggest_internal_links` shows which pages should link where.
+- **Knowledge graph ready.** `check_entity_graph` checks that your Organization and authors are real, linked entities with profile links, not just valid markup. `validate_llms_txt` catches the common case where /llms.txt returns an HTML page.
 - **No made-up advice.** The `onpage://rules` resource gives the assistant every check, threshold and fix, so it explains SEO from the same rules the scanner uses.
 - **Free and hosted.** Paste one URL. No account, no API key, no install.
 
@@ -144,7 +145,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-21 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+23 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -174,6 +175,8 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `find_answer_passages` | Does the page answer a question well enough for AI to quote it? Returns the best passages with length and fit | `Best passage, 64 words` |
 | `ai_crawler_policy` | robots.txt rules for 13 AI crawlers from a policy (allow all, AI search only, block all), merged into your existing file | `13 bots, merged` |
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
+| `validate_llms_txt` | Check an llms.txt against the llmstxt.org format: a real text file (not an HTML soft 404), one title, a summary, sections with `[name](url): notes` links, size, dead links, and whether llms-full.txt exists. Validates drafts too | `Valid, 6 sections, 8 of 8 links load` |
+| `check_entity_graph` | How the structured data describes who is behind a page, the way AI knowledge graphs read it: Organization, author and publisher as linked entities (`@id`), `sameAs` profiles that load, a match with the home page, and the missing JSON-LD with TODOs | `5 entities, 1 fix: no sameAs` |
 
 ### Launch and migration
 
