@@ -78,6 +78,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Whole sites, step by step.** `start_site_audit` runs as a job the agent works through, so a 25-page audit fits a free hosted service. It reports issues across the site by code, broken and orphan pages and duplicates.
 - **You vs the pages that rank.** `compare_pages` puts a page next to up to 3 competitors with content gaps and fixes to catch up; `suggest_internal_links` shows which pages should link where.
 - **Knowledge graph ready.** `check_entity_graph` checks that your Organization and authors are real, linked entities with profile links, not just valid markup. `validate_llms_txt` catches the common case where /llms.txt returns an HTML page.
+- **Citability, not just crawlability.** AI readiness checks fact density, cited outside sources and whether every question heading gets a direct answer. `compare_pages` shows the facts and figures only a competitor gives, and the ones only you give: information gain, measured against the pages that rank.
 - **No made-up advice.** The `onpage://rules` resource gives the assistant every check, threshold and fix, so it explains SEO from the same rules the scanner uses.
 - **Free and hosted.** Paste one URL. No account, no API key, no install.
 
@@ -171,7 +172,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 | Tool | What it does | Example result |
 |---|---|---|
-| `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 11 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
+| `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 14 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
 | `find_answer_passages` | Does the page answer a question well enough for AI to quote it? Returns the best passages with length and fit | `Best passage, 64 words` |
 | `ai_crawler_policy` | robots.txt rules for 13 AI crawlers from a policy (allow all, AI search only, block all), merged into your existing file | `13 bots, merged` |
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
