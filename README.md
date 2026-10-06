@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="24 tools" src="https://img.shields.io/badge/tools-24-4f46e5">
+  <img alt="30 tools" src="https://img.shields.io/badge/tools-30-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -20,6 +20,7 @@
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
   <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
+  <a href="#keeps-watching-after-you-ship">Watch and alerts</a> ·
   <a href="#built-for-agents">Built for agents</a> ·
   <a href="#what-it-can-do">Tools</a> ·
   <a href="#why-it-is-different">Why it is different</a> ·
@@ -71,10 +72,31 @@ With Ahrefs Brand Radar (or any source of AI citation counts) connected, `compar
 
 What `prioritize_fixes` looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
 
+## Keeps watching after you ship
+
+Most SEO problems are not there on launch day. They arrive later: a deploy adds `noindex`, a CMS update changes the canonical, a new robots.txt blocks GPTBot. `watch_page` rechecks a page about once a day and records every change for search and AI. Alerts go to a private RSS feed and, if you give one, a Slack or Discord webhook. No account, no key.
+
+```
+You:        Keep an eye on our pricing page and tell me if anything breaks.
+
+Assistant:  watch_page           baseline 94/100, 8 of 8 AI crawlers allowed
+            ...three days later, in your Slack:
+            OnPage.dev: 2 change(s) on https://example.com/pricing
+            - A noindex tag was added: the page will drop out of Google
+            - The score went from 94 to 71
+```
+
+And three more jobs agents get asked to do every week:
+
+- **`create_content_brief`**: give a search term and the pages that rank, get a writing brief: the subtopics most of them cover, the questions they answer, figures to back up with your own data, a target length, schema and internal links. Bot walls and navigation headings are filtered out.
+- **`plan_redirects`**: give the old and new URLs (or the sites, to read their sitemaps) and get a 301 map with a confidence score per match, written as `_redirects`, nginx, Apache, Next.js or CSV. Then verify after launch with `check_urls`.
+- **`share_result`**: after fixing a site, publish a before and after page (for example 46 → 94, with the issues fixed) to send to your client. Not indexed, expires after 90 days.
+
 ## Built for agents
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
 - **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
 - **It checks the code the agent writes.** `scan_html`, `validate_schema` and `compare_html` test new HTML and JSON-LD before it ships, and catch regressions such as a stray `noindex` or a removed canonical.
@@ -150,7 +172,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-24 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+30 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -161,6 +183,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
+| `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 
 ### Whole site and competitors
 
@@ -183,12 +206,14 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `validate_llms_txt` | Check an llms.txt against the llmstxt.org format: a real text file (not an HTML soft 404), one title, a summary, sections with `[name](url): notes` links, size, dead links, and whether llms-full.txt exists. Validates drafts too | `Valid, 6 sections, 8 of 8 links load` |
 | `check_entity_graph` | How the structured data describes who is behind a page, the way AI knowledge graphs read it: Organization, author and publisher as linked entities (`@id`), `sameAs` profiles that load, a match with the home page, and the missing JSON-LD with TODOs | `5 entities, 1 fix: no sameAs` |
 | `compare_ai_citations` | AI citation counts per page from Ahrefs Brand Radar or another source, next to OnPage.dev checks: which checks the cited pages pass and the others fail, averages side by side, and what each skipped page should change | `Clear answer first: 100% of cited pages vs 0%` |
+| `watch_page` / `get_watch` / `unwatch` | A daily check for regressions: page down or redirected, noindex added, AI crawlers blocked, canonical or title changed, score drop, new and fixed issues. Private RSS feed, optional Slack or Discord webhook | `noindex added, alert sent` |
 
 ### Launch and migration
 
 | Tool | What it does | Example result |
 |---|---|---|
 | `check_urls` | Status codes and full redirect chains for up to 20 URLs, checked against where each should land. Flags chains and temporary redirects | `19 of 20 OK` |
+| `plan_redirects` | Old URLs to new ones with a confidence score per match, written as `_redirects`, nginx, Apache, Next.js or CSV rules | `212 matched, 9 to review` |
 | `test_robots` | May Googlebot, GPTBot, ClaudeBot or any crawler fetch this URL? Uses Google's matching rules and returns the exact deciding rule. Can test a proposed robots.txt too | `Blocked by "Disallow: /search?"` |
 
 ### Writing and code
@@ -200,6 +225,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `validate_schema` | Check JSON-LD you wrote: syntax, @context and @type, ISO dates, absolute URLs, placeholders and Google's required fields | `2 errors, 3 warnings` |
 | `check_focus_keyword` | Eight checks for one search term: title, description, H1, URL, opening text, subheadings, alt texts and keyword use | `6 of 8` |
 | `check_snippet` | Pixel-width estimate of title and description against Google's cut-off, desktop and mobile | `612 px, cut off` |
+| `create_content_brief` | A writing brief from the pages that rank: subtopics, questions, figures, target length, schema, title patterns and internal links | `8 topics, 5 questions` |
 
 ### Ready workflows (MCP prompts)
 
@@ -237,6 +263,8 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Ready code | Fix pack, JSON-LD, robots.txt, llms.txt | No | Varies |
 | Uses your traffic data | Yes, from GSC, GA4, Ahrefs or Semrush already in the chat | Their own data | Rarely |
 | Explains AI citations | Cited vs skipped pages, checked side by side | Citation counts only | No |
+| Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
+| Migration redirect map | Old to new with confidence, ready rules | No | Rarely |
 
 What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.
 
