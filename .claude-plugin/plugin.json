@@ -1,6 +1,6 @@
 {
   "name": "onpage",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Free SEO and AI-visibility checks inside Claude Code: scan pages and unpublished HTML, get ready-to-paste fixes, and verify them before and after deploy. Powered by the hosted OnPage.dev MCP server, no account or key.",
   "author": {
     "name": "OnPage.dev",

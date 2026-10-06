@@ -12,13 +12,14 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="20 tools" src="https://img.shields.io/badge/tools-20-4f46e5">
+  <img alt="21 tools" src="https://img.shields.io/badge/tools-21-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
 
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
+  <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
   <a href="#built-for-agents">Built for agents</a> ·
   <a href="#what-it-can-do">Tools</a> ·
   <a href="#why-it-is-different">Why it is different</a> ·
@@ -44,10 +45,33 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
 
+## Uses the SEO data you already have
+
+Already connected Google Search Console, GA4, Ahrefs or Semrush to your assistant? OnPage.dev tells the assistant to pull their numbers in, then `prioritize_fixes` ranks every fix by the traffic it can win. Nothing connected? It ranks by severity, as before. You do not set anything up.
+
+```
+You:        Audit example.com and tell me what to fix first.
+
+Assistant:  start_site_audit     10 pages, average 81
+            (Ahrefs) top pages   clicks, positions, keywords, referring domains
+            prioritize_fixes     ranked by traffic impact
+
+            1. /pricing is noindex but gets 900 visits a month. Fix this first.
+            2. /results ranks #6 for "league table" (5,600 searches a month).
+               Add the term to the H1 to push into the top 3, ~330 extra clicks.
+            3. /guide shows up 20,000 times at position 3 but gets 0.2% clicks.
+               Rewrite the title and description, test them with check_snippet.
+```
+
+How it works: an MCP server cannot read other connectors, and should not. OnPage.dev's results and instructions ask the assistant to fetch the numbers from any SEO data tool it has, and the assistant passes them to `prioritize_fixes`. The numbers are used for that answer only and never stored. OnPage.dev never logs in to those services.
+
+What it looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
+
 ## Built for agents
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
 - **It checks the code the agent writes.** `scan_html`, `validate_schema` and `compare_html` test new HTML and JSON-LD before it ships, and catch regressions such as a stray `noindex` or a removed canonical.
 - **Launch and migration built in.** `check_urls` follows every redirect chain for up to 20 URLs at once; `test_robots` answers "may this bot fetch this URL" with Google's own matching rules, including `*` and `$` wildcards.
@@ -120,7 +144,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-20 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+21 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -139,6 +163,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `start_site_audit` | Audit up to 25 pages from the sitemap as a job. Returns an `audit_id` and the first progress | `3 of 25 scanned` |
 | `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
+| `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
 | `compare_pages` | A page next to up to 3 competitors: side by side, content gaps, structured data they have and fixes to catch up. Flags cookie walls | `You lead on 12 of 14` |
 
 ### AI search
@@ -201,8 +226,9 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Competitor gaps | Page vs page, with content gaps | Keyword and backlink gaps | Rarely |
 | AI search tools | Crawler access, AI-answer checks, robots.txt policy, llms.txt | AI visibility tracking on some | Rarely |
 | Ready code | Fix pack, JSON-LD, robots.txt, llms.txt | No | Varies |
+| Uses your traffic data | Yes, from GSC, GA4, Ahrefs or Semrush already in the chat | Their own data | Rarely |
 
-What OnPage.dev does not do: search volumes, rankings or backlinks. For those, the data vendors are still the place to go, and they work well alongside OnPage.dev.
+What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.
 
 ## Example prompts
 
@@ -272,6 +298,7 @@ The pull request gets a comment like this, updated on every push:
 - **Read-only.** Every tool only reads public pages or the HTML you send. Nothing is changed anywhere.
 - **Public pages only.** Private, internal and local network addresses are refused (SSRF protection), and so are non-web schemes.
 - **No storage of content.** HTML sent to `scan_html` is analysed in memory and dropped. For change tracking, only the score and issue names are kept, under a hashed key, for up to 30 days.
+- **Your traffic data stays yours.** Numbers passed to `prioritize_fixes` are used for that answer only. OnPage.dev never connects to Search Console, GA4, Ahrefs or Semrush itself.
 - **Prompt injection aware.** Text from scanned pages is returned as data and marked as such.
 - **Fair use limits.** About 20 scans per minute per connection, plus a shared cap. No accounts, no keys, no tracking cookies.
 
