@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="30 tools" src="https://img.shields.io/badge/tools-30-4f46e5">
+  <img alt="34 tools" src="https://img.shields.io/badge/tools-34-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -20,6 +20,7 @@
 <p align="center">
   <a href="#install-in-one-minute">Install</a> ·
   <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
+  <a href="#seen-by-every-reader">Every reader</a> ·
   <a href="#keeps-watching-after-you-ship">Watch and alerts</a> ·
   <a href="#built-for-agents">Built for agents</a> ·
   <a href="#what-it-can-do">Tools</a> ·
@@ -45,6 +46,27 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
 
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
+
+## Seen by every reader
+
+Google reads your HTML. Visitors see one screen on a phone. Screen readers, and AI agents that browse for people, read the accessibility tree. OnPage.dev checks all three in a real browser.
+
+**`render_page`** loads the page on a phone, tablet and desktop and checks the first screen: is the H1 and the call to action visible without scrolling, does a cookie wall or pop-up cover it, are tap targets big enough, what shifts while loading. It loads the page again with JavaScript off to show what GPTBot and ClaudeBot miss, and checks whether the first screen delivers what the Google snippet promises. With screenshots.
+
+**`screen_reader_view`** reads the page the way a screen reader announces it:
+
+```
+heading level 1, Running shoes for flat feet
+link, Women
+link                         ← announced without a name
+button                       ← announced without a name
+image, Trail shoe in grey mesh, side view
+link, Read more              ← vague, and weak anchor text
+```
+
+It flags links and buttons without a name, vague link text, form fields without a label, a missing main landmark, skipped headings and visible text hidden from readers. Accessibility is not a direct Google ranking factor, but alt text, link text, headings and text that is not hidden are exactly what search engines, AI answer engines and browsing agents read. We ran it on our own news site and found three thumbnail links announced as just "link".
+
+Have your own browser tool (Claude in Chrome, Playwright)? **`get_layout_probe`** gives a small measurement script and **`analyze_layout`** analyses its results: no daily limit, and it works on staging, localhost and pages behind a login.
 
 ## Uses the SEO data you already have
 
@@ -96,6 +118,7 @@ And three more jobs agents get asked to do every week:
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
 - **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
 - **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
@@ -172,7 +195,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-30 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+34 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -184,6 +207,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
+| `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors
 
@@ -205,6 +229,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
 | `validate_llms_txt` | Check an llms.txt against the llmstxt.org format: a real text file (not an HTML soft 404), one title, a summary, sections with `[name](url): notes` links, size, dead links, and whether llms-full.txt exists. Validates drafts too | `Valid, 6 sections, 8 of 8 links load` |
 | `check_entity_graph` | How the structured data describes who is behind a page, the way AI knowledge graphs read it: Organization, author and publisher as linked entities (`@id`), `sameAs` profiles that load, a match with the home page, and the missing JSON-LD with TODOs | `5 entities, 1 fix: no sameAs` |
+| `screen_reader_view` | How screen readers and browsing AI agents read the page: landmarks, heading outline, every link, button, image and field with its name, and what is missing | `3 links without a name` |
 | `compare_ai_citations` | AI citation counts per page from Ahrefs Brand Radar or another source, next to OnPage.dev checks: which checks the cited pages pass and the others fail, averages side by side, and what each skipped page should change | `Clear answer first: 100% of cited pages vs 0%` |
 | `watch_page` / `get_watch` / `unwatch` | A daily check for regressions: page down or redirected, noindex added, AI crawlers blocked, canonical or title changed, score drop, new and fixed issues. Private RSS feed, optional Slack or Discord webhook | `noindex added, alert sent` |
 
@@ -226,6 +251,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_focus_keyword` | Eight checks for one search term: title, description, H1, URL, opening text, subheadings, alt texts and keyword use | `6 of 8` |
 | `check_snippet` | Pixel-width estimate of title and description against Google's cut-off, desktop and mobile | `612 px, cut off` |
 | `create_content_brief` | A writing brief from the pages that rank: subtopics, questions, figures, target length, schema, title patterns and internal links | `8 topics, 5 questions` |
+| `get_layout_probe` / `analyze_layout` | Run the first-screen checks in your own browser tool: no daily limit, works on staging and localhost | `First screen, 3 devices` |
 
 ### Ready workflows (MCP prompts)
 
@@ -264,6 +290,8 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Uses your traffic data | Yes, from GSC, GA4, Ahrefs or Semrush already in the chat | Their own data | Rarely |
 | Explains AI citations | Cited vs skipped pages, checked side by side | Citation counts only | No |
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
+| Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
+| Screen reader view | Accessibility tree read aloud, unnamed controls flagged | No | Rarely |
 | Migration redirect map | Old to new with confidence, ready rules | No | Rarely |
 
 What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.
