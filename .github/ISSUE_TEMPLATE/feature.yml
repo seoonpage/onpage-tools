@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a new check, tool or improvement.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the situation, for example "my agent cannot tell whether…".
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like OnPage.dev to do?
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: A URL, a prompt you would give your agent, or the output you would want.

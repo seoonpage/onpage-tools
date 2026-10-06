@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security issue
+    url: https://github.com/seoonpage/onpage-tools/security/advisories/new
+    about: Please report vulnerabilities privately, not in a public issue.
+  - name: Setup help and docs
+    url: https://onpage.dev/mcp
+    about: How to connect OnPage.dev to Claude, ChatGPT, Cursor or VS Code.
+  - name: Email
+    url: mailto:hi@onpage.dev
+    about: Anything else.

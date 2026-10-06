@@ -1,0 +1,37 @@
+name: Bug or wrong result
+description: A check gives a wrong result, a tool fails, or the Action breaks.
+labels: [bug]
+body:
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it happen?
+      options:
+        - MCP server (Claude, ChatGPT, Cursor, VS Code or another client)
+        - onpage.dev website
+        - GitHub Action
+        - Claude Code plugin or skill
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Tool or check
+      placeholder: e.g. scan_page, check_snippet, meta-missing
+  - type: input
+    id: url
+    attributes:
+      label: URL scanned
+      description: A public URL we can scan. Leave empty if you used HTML instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or error
+      description: Paste the tool result or error message. Remove anything private.
+      render: text
