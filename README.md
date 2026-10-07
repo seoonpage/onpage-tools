@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="46 tools" src="https://img.shields.io/badge/tools-46-4f46e5">
+  <img alt="47 tools" src="https://img.shields.io/badge/tools-47-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -385,7 +385,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-46 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+47 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -412,6 +412,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `start_site_audit` | Audit up to 25 pages from the sitemap as a job. Returns an `audit_id` and the first progress | `3 of 25 scanned` |
 | `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
+| `map_topics` | Topic clusters from Search Console rows: which page owns each topic, where pages compete, topics without their own page, pages without search demand and the internal links to add | `14 topics, 3 compete, 2 gaps` |
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
 | `match_intent` | Does the page match search intent? Scans the top results you pass (from Ahrefs or Semrush), works out the page type Google ranks (guide, listicle, product, category, service, forum, video and more) and the format that ranks. With Search Console rows: pages that compete for the same query | `Mismatch: results are listicles, yours is a product page` |
 | `check_readability` | Reading ease with the formula for the page language (Flesch, Flesch-Douma, Amstad, Kandel-Moles, Fernández-Huerta, Flesch-Vacca) against the pages that rank or the norm for the page type, average sentence length, long sentences, and the hardest sentences and paragraphs to rewrite | `63 vs 52 for ranking pages` |
