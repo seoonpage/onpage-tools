@@ -496,6 +496,8 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | From findings to tasks | Google Sheets, Slack, Notion and task boards, no connector needed for Sheets | Exports to CSV or PDF | Rarely |
 | Migration redirect map | Old to new with confidence, ready rules | No | Rarely |
 
+Full comparison with the Ahrefs, Semrush, SE Ranking and DataForSEO MCP servers, with prices: [onpage.dev/compare](https://onpage.dev/compare).
+
 What OnPage.dev does not have: its own search volumes, rankings or backlinks. Connect a data vendor in the same chat and OnPage.dev turns their numbers into ranked fixes.
 
 ## Example prompts
