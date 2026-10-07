@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="38 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
+  <img alt="39 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -206,6 +206,24 @@ Assistant:  scan_page            46: title too short, no meta description, 1 ima
 - OnPage.dev never logs in to your site and stores no passwords: your own WordPress connection makes every change.
 - Without a WordPress connection, the same plan tells you exactly what to paste where.
 
+## Share cards, with a free API
+
+`check_og_tags` shows how a page looks when it is shared on Facebook, LinkedIn, X, WhatsApp and Slack: every Open Graph and Twitter tag, and the share image itself. It loads the image and reads its real size from the file header, so it catches the cases other checkers miss: an `og:image` that returns 404, a 400 x 400 logo where a 1200 x 630 image belongs, an SVG that no platform shows, or a 6 MB file.
+
+The same check is a free public REST API, no key needed:
+
+```bash
+curl "https://onpage.dev/api/v1/og?url=https://example.com"
+```
+
+```json
+{ "url": "https://github.com/", "score": 100,
+  "image": { "ok": true, "type": "image/png", "width": 1200, "height": 630, "bytes": 618778 },
+  "issues": [] }
+```
+
+10 requests a minute per IP address, CORS open, each result cached for 5 minutes. Try it in the browser: [Open Graph checker](https://onpage.dev/tools/og-checker).
+
 ## Keeps watching after you ship
 
 Most SEO problems are not there on launch day. They arrive later: a deploy adds `noindex`, a CMS update changes the canonical, a new robots.txt blocks GPTBot. `watch_page` rechecks a page about once a day and records every change for search and AI. Alerts go to a private RSS feed and, if you give one, a Slack or Discord webhook. No account, no key.
@@ -313,7 +331,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-38 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+39 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -339,6 +357,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
 | `match_intent` | Does the page match search intent? Scans the top results you pass (from Ahrefs or Semrush), works out the page type Google ranks (guide, listicle, product, category, service, forum, video and more) and the format that ranks. With Search Console rows: pages that compete for the same query | `Mismatch: results are listicles, yours is a product page` |
 | `check_readability` | Reading ease (Flesch, Flesch-Douma for Dutch) against the pages that rank or the norm for the page type, average sentence length, long sentences, and the hardest sentences and paragraphs to rewrite | `63 vs 52 for ranking pages` |
+| `check_og_tags` | Open Graph and Twitter tags plus the real share image (loads? size in pixels, type, weight) against what Facebook, LinkedIn and X need. Also a free REST API: `GET /api/v1/og?url=` | `og:image returns 404` |
 | `compare_pages` | A page next to up to 3 competitors: side by side, content gaps, structured data they have and fixes to catch up. Flags cookie walls | `You lead on 12 of 14` |
 
 ### AI search
