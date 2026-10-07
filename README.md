@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="42 tools" src="https://img.shields.io/badge/tools-42-4f46e5">
+  <img alt="46 tools" src="https://img.shields.io/badge/tools-46-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -297,6 +297,8 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Handles JavaScript apps.** Pure client-side React, Angular and Vue apps get a full audit of the rendered page, the way Google sees it, plus how little AI crawlers get without JavaScript.
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
+- **Accessibility for the EAA.** `check_accessibility` maps every check to WCAG 2.1 AA, the standard behind the European Accessibility Act.
+- **Ecommerce and consent.** `check_product_page` checks Product markup for merchant listings; `check_consent` checks the cookie banner and Consent Mode v2.
 - **Closes the loop after shipping.** `submit_indexnow` pings Bing and other IndexNow engines, and the agent runs URL Inspection in your Search Console tool for Google.
 - **Reads every language right.** Reading ease uses the formula for the page language: Flesch-Douma for Dutch, Amstad for German, Kandel-Moles for French, Fernández-Huerta for Spanish.
 - **A public scoring method.** Every check, what it costs and what the score leaves out, on [onpage.dev/methodology](https://onpage.dev/methodology). What changed lives on [onpage.dev/changelog](https://onpage.dev/changelog).
@@ -383,7 +385,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-42 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+46 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -393,6 +395,9 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
 | `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content. With `platform: "git"`: code for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue and the steps for a pull request. With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
+| `check_accessibility` | WCAG 2.1 AA report for the European Accessibility Act: every automated check mapped to its success criterion, contrast and reflow from the real-browser check, and what to test by hand | `9 of 11 criteria pass` |
+| `check_product_page` | Ecommerce product page: Product and Offer markup, price, stock, identifiers, shipping and return policy for merchant listings, variants, out-of-stock handling and filter URLs | `2 errors, 3 warnings` |
+| `check_consent` | Cookie banner and Google Consent Mode v2: which consent platform runs, whether the default comes before the Google tags, ad_user_data and ad_personalization | `Consent Mode v2: missing signals` |
 | `check_web_vitals` | Core Web Vitals from real Chrome users (CrUX): LCP, INP, CLS, FCP and TTFB on phone and desktop, rated good, needs improvement or poor, with what to fix | `Phone fails: LCP 3.1 s` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
@@ -420,6 +425,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 15 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
 | `submit_indexnow` | Tell Bing, Yandex and other IndexNow engines that pages changed, right after a fix goes live. Sets up the key file the first time | `12 URLs accepted` |
 | `analyze_logs` | What Googlebot, Bingbot and 14 AI crawlers really request, from your access logs: hits per bot, errors and redirects they get, crawl budget on parameters, and sitemap pages Googlebot never visits | `GPTBot: 212 hits, 9% errors` |
+| `check_answer_format` | Featured snippets and People Also Ask: the answer format that wins on the pages that rank (paragraph and length, list and items, or table) against your section, with the rewrite | `Winning: list of 7, yours: paragraph` |
 | `find_answer_passages` | Does the page answer a question well enough for AI to quote it? Returns the best passages with length and fit | `Best passage, 64 words` |
 | `ai_crawler_policy` | robots.txt rules for 13 AI crawlers from a policy (allow all, AI search only, block all), merged into your existing file | `13 bots, merged` |
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
@@ -488,6 +494,7 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
 | Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
 | Client-side apps (React, Angular, Vue) | Full audit of the rendered page, plus what AI crawlers miss | No | Rarely |
+| Accessibility report | WCAG 2.1 AA, mapped per criterion, for the European Accessibility Act | No | Rarely |
 | Ships fixes | WordPress, or a Git pull request with framework code | No | Rarely |
 | Server log analysis | Googlebot and 14 AI crawlers, sitemap gaps | No | Some |
 | Real-user Web Vitals | Chrome UX Report, phone and desktop | Some | Some |

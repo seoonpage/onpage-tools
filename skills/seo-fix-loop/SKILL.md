@@ -12,6 +12,8 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - Traffic first: if a Google Search Console, GA4, Ahrefs or Semrush tool is available, fetch the site's top pages (clicks, impressions, position, traffic, referring domains) and top queries, at most 10 pages and 20 queries each, and call `prioritize_fixes` with them. Work through its list in order. Without such a tool, skip this.
 - What visitors and assistive tech get: call `render_page` for the first screen on phone, tablet and desktop (H1 and call to action above the fold, cookie walls, tap targets, JavaScript-only content) and `screen_reader_view` for links, buttons and images without a name. With your own browser tool, use `get_layout_probe` and `analyze_layout` instead.
 - Real-user speed: call `check_web_vitals` for Core Web Vitals from real Chrome visitors. For any metric that is not good, look for the cause in the code (large hero images, render-blocking scripts, layout shifts) before anything else.
+- Page type checks: on ecommerce product pages call `check_product_page`; for accessibility (and the European Accessibility Act) call `check_accessibility`; for the cookie banner and Google Consent Mode call `check_consent`.
+- Featured snippets: for a question the page should win, fetch the top results with the user's Ahrefs or Semrush and call `check_answer_format`; rewrite the section in the winning format.
 - Server logs: if the user can share access log lines, call `analyze_logs` to see what Googlebot and AI crawlers really crawl and which errors they get.
 - Unpublished work: build the project if that is cheap, read the generated HTML and call `scan_html` with it. Pass the future URL as `url` when known so canonical and relative links are judged correctly.
 
