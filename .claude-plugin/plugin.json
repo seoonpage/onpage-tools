@@ -1,7 +1,7 @@
 {
   "name": "onpage",
-  "version": "1.6.0",
-  "description": "Free SEO and AI-visibility checks inside Claude Code: scan pages and unpublished HTML, get ready-to-paste fixes, and verify them before and after deploy. Powered by the hosted OnPage.dev MCP server, no account or key.",
+  "version": "1.7.0",
+  "description": "The whole SEO loop inside Claude Code: find what is wrong for Google and AI search, write the fix in your framework, check it before deploy, ship it as a pull request and prove the result. 42 tools on the hosted OnPage.dev MCP server, free, no account or key.",
   "author": {
     "name": "OnPage.dev",
     "url": "https://onpage.dev"
@@ -14,6 +14,8 @@
     "llms-txt",
     "robots-txt",
     "structured-data",
-    "mcp"
+    "mcp",
+    "core-web-vitals",
+    "indexnow"
   ]
 }

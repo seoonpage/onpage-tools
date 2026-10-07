@@ -6,7 +6,7 @@
     {
       "name": "onpage",
       "source": "./",
-      "description": "Free SEO and AI-visibility checks inside Claude Code, with a fix and verify loop before and after deploy.",
+      "description": "The whole SEO loop inside Claude Code: find, fix in your framework, check before deploy, ship as a pull request and prove the result. 42 free tools.",
       "category": "development"
     }
   ]
