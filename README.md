@@ -251,6 +251,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Proves the result.** `measure_impact` compares before and after numbers against a control group of unchanged pages. [More](#the-whole-loop-inside-your-ai-agent).
 - **From finding to done.** `export_findings` sends the plan to Google Sheets (no connector needed), Slack, Notion or a task board. [More](#from-finding-to-done).
 - **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
+- **Handles JavaScript apps.** Pure client-side React, Angular and Vue apps get a full audit of the rendered page, the way Google sees it, plus how little AI crawlers get without JavaScript.
 - **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
 - **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
@@ -432,6 +433,7 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Explains AI citations | Cited vs skipped pages, checked side by side | Citation counts only | No |
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
 | Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
+| Client-side apps (React, Angular, Vue) | Full audit of the rendered page, plus what AI crawlers miss | No | Rarely |
 | Screen reader view | Accessibility tree read aloud, unnamed controls flagged | No | Rarely |
 | Measures the result | Before and after, with a control group | Rank and traffic charts | Rarely |
 | From findings to tasks | Google Sheets, Slack, Notion and task boards, no connector needed for Sheets | Exports to CSV or PDF | Rarely |
@@ -515,7 +517,7 @@ Full details: [onpage.dev/privacy](https://onpage.dev/privacy) and [onpage.dev/t
 
 ## Good to know
 
-- The main scan reads the HTML a server returns, the way Google and AI crawlers do. `render_page` and `screen_reader_view` add a real browser, with and without JavaScript, so content that only appears in the browser is covered too.
+- The main scan reads the HTML a server returns, the way AI crawlers do. When that HTML is an empty shell from a client-side React, Angular or Vue app, `scan_page` loads the page in a real browser and audits the rendered page instead, and reports how many words crawlers without JavaScript get. This shares the daily real-browser budget; when it runs out you get the raw-HTML scan with a warning. `render_page` and `screen_reader_view` add phone, tablet and desktop views, with and without JavaScript.
 - Link checks, image sizes and AI crawler access need a live URL, so `scan_html` skips them.
 - Pixel widths in `check_snippet` are an estimate; Google can also rewrite snippets.
 
