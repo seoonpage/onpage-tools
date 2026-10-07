@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="39 tools" src="https://img.shields.io/badge/tools-36-4f46e5">
+  <img alt="41 tools" src="https://img.shields.io/badge/tools-41-4f46e5">
   <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -148,6 +148,8 @@ With Ahrefs Brand Radar (or any source of AI citation counts) connected, `compar
 
 What `prioritize_fixes` looks for: blockers on pages with traffic, low click-through for the position, keywords in striking distance (position 4 to 15), top queries missing from the title or H1, and pages with strong backlinks that score badly.
 
+With GA4 conversions (key events) or revenue per page, it ranks by money instead of clicks: a pricing page that converts comes before a busy blog post that does not.
+
 ## Matches search intent
 
 The fastest way to waste a month: write a product page for a keyword where Google only ranks guides. `match_intent` checks what actually ranks before you write.
@@ -206,6 +208,27 @@ Assistant:  scan_page            46: title too short, no meta description, 1 ima
 - OnPage.dev never logs in to your site and stores no passwords: your own WordPress connection makes every change.
 - Without a WordPress connection, the same plan tells you exactly what to paste where.
 
+## Ships as a pull request
+
+Not on WordPress? `get_fix_pack` with `platform: "git"` writes the fixes as code for the site's framework and opens a pull request through the git tools your agent already has. It detects Next.js (App and Pages Router), Nuxt, SvelteKit, Astro, Angular, React, Vue and plain HTML from the page itself.
+
+```
+You:        Fix the SEO on /pricing and open a PR.
+
+Assistant:  scan_page            58: title too short, no canonical, no structured data
+            get_fix_pack         platform: git, detected Next.js (App Router)
+                                 export const metadata = { title, alternates.canonical }
+                                 JSON-LD in the page component
+            git switch -c seo/onpage-pricing
+            (edit app/pricing/page.tsx, build)
+            scan_html            91, nothing else changed
+            gh pr create         #42 "SEO: title, canonical, jsonLd for /pricing"
+```
+
+- `metadata` for Next.js, `useSeoMeta` and `useHead` for Nuxt and Vue, `<svelte:head>` for SvelteKit, the `Title` and `Meta` services for Angular, head tags for Astro and plain HTML.
+- Always a new branch, checked with `scan_html` before the PR, never merged by the agent.
+- For client-side React, Vue and Angular apps it also says how to prerender, because AI crawlers do not run JavaScript.
+
 ## Share cards, with a free API
 
 `check_og_tags` shows how a page looks when it is shared on Facebook, LinkedIn, X, WhatsApp and Slack: every Open Graph and Twitter tag, and the share image itself. It loads the image and reads its real size from the file header, so it catches the cases other checkers miss: an `og:image` that returns 404, a 400 x 400 logo where a 1200 x 630 image belongs, an SVG that no platform shows, or a 6 MB file.
@@ -252,6 +275,9 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **From finding to done.** `export_findings` sends the plan to Google Sheets (no connector needed), Slack, Notion or a task board. [More](#from-finding-to-done).
 - **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
 - **Handles JavaScript apps.** Pure client-side React, Angular and Vue apps get a full audit of the rendered page, the way Google sees it, plus how little AI crawlers get without JavaScript.
+- **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
+- **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
+- **Light on context.** Connect `https://onpage.dev/mcp?tools=core` for the 10 main tools when your agent already loads many servers.
 - **Keeps watching.** `watch_page` catches regressions after launch and alerts by RSS or webhook. [More](#keeps-watching-after-you-ship).
 - **Uses the data you already have.** Search Console, GA4, Ahrefs or Semrush in the same chat? `prioritize_fixes` ranks every fix by traffic impact with their numbers, and `compare_ai_citations` shows what the pages AI cites do differently. [How it works](#uses-the-seo-data-you-already-have).
 - **Stable issue codes and typed results.** Every issue has a fixed code like `meta-missing` or `h1-missing`, and the main tools declare an output schema. An agent can work through issues one by one and prove each one is gone.
@@ -271,6 +297,8 @@ What makes OnPage.dev different from every other SEO MCP server:
 One click for Cursor and VS Code. For Claude, ChatGPT and other clients, see below.
 
 The server is hosted. There is nothing to install or run, and no key.
+
+Fewer tools in context: use `https://onpage.dev/mcp?tools=core` for the 10 main tools (scan, fix pack, scan_html, rescan, render, site audit, prioritise, export).
 
 **Server URL:** `https://onpage.dev/mcp`
 
@@ -332,7 +360,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-39 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+41 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -340,8 +368,9 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 |---|---|---|
 | `scan_page` | Score from 0 to 100, the issues to fix first with why and how, AI readiness and key facts | `46/100, 5 fixes` |
 | `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
-| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection | `<title>`, `<meta>`, canonical, social tags |
+| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content. With `platform: "git"`: code for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue and the steps for a pull request. With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
+| `check_web_vitals` | Core Web Vitals from real Chrome users (CrUX): LCP, INP, CLS, FCP and TTFB on phone and desktop, rated good, needs improvement or poor, with what to fix | `Phone fails: LCP 3.1 s` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
@@ -366,6 +395,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | Tool | What it does | Example result |
 |---|---|---|
 | `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 14 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
+| `analyze_logs` | What Googlebot, Bingbot and 14 AI crawlers really request, from your access logs: hits per bot, errors and redirects they get, crawl budget on parameters, and sitemap pages Googlebot never visits | `GPTBot: 212 hits, 9% errors` |
 | `find_answer_passages` | Does the page answer a question well enough for AI to quote it? Returns the best passages with length and fit | `Best passage, 64 words` |
 | `ai_crawler_policy` | robots.txt rules for 13 AI crawlers from a policy (allow all, AI search only, block all), merged into your existing file | `13 bots, merged` |
 | `generate_llms_txt` | A ready `llms.txt` built from the sitemap and home page | `llms.txt, 42 pages` |
@@ -434,6 +464,9 @@ In clients that support MCP Apps (Claude) or the Apps SDK (ChatGPT), scan result
 | Monitoring and alerts | Daily watch, RSS and webhook, free | Yes, paid | Rarely |
 | Real-browser first screen | Phone, tablet, desktop, with and without JavaScript | No | Rarely |
 | Client-side apps (React, Angular, Vue) | Full audit of the rendered page, plus what AI crawlers miss | No | Rarely |
+| Ships fixes | WordPress, or a Git pull request with framework code | No | Rarely |
+| Server log analysis | Googlebot and 14 AI crawlers, sitemap gaps | No | Some |
+| Real-user Web Vitals | Chrome UX Report, phone and desktop | Some | Some |
 | Screen reader view | Accessibility tree read aloud, unnamed controls flagged | No | Rarely |
 | Measures the result | Before and after, with a control group | Rank and traffic charts | Rarely |
 | From findings to tasks | Google Sheets, Slack, Notion and task boards, no connector needed for Sheets | Exports to CSV or PDF | Rarely |
