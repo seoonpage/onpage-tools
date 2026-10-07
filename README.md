@@ -23,6 +23,8 @@
   <a href="#the-whole-loop-inside-your-ai-agent">The whole loop</a> ·
   <a href="#from-finding-to-done">From finding to done</a> ·
   <a href="#seen-by-every-reader">Every reader</a> ·
+  <a href="#real-user-speed">Real-user speed</a> ·
+  <a href="#ships-as-a-pull-request">Pull requests</a> ·
   <a href="#keeps-watching-after-you-ship">Watch and alerts</a> ·
   <a href="#built-for-agents">Built for agents</a> ·
   <a href="#what-it-can-do">Tools</a> ·
@@ -122,6 +124,24 @@ It flags links and buttons without a name, vague link text, form fields without 
 
 Have your own browser tool (Claude in Chrome, Playwright)? **`get_layout_probe`** gives a small measurement script and **`analyze_layout`** analyses its results: no daily limit, and it works on staging, localhost and pages behind a login.
 
+
+## Real-user speed
+
+Lab tests guess. **`check_web_vitals`** shows what real Chrome visitors got over the last 28 days, from the Chrome UX Report: the field data Google uses for ranking.
+
+```
+You:        Is our homepage fast enough for Google?
+
+Assistant:  check_web_vitals     Phone: passed · Desktop: passed
+                                 LCP  1.4 s   good   93% of visits good
+                                 INP  197 ms  good   75% of visits good, 8% poor
+                                 CLS  0.00    good   95% of visits good
+```
+
+- LCP, INP and CLS, plus FCP and time to first byte, on phone and desktop, each rated good, needs improvement or poor.
+- Pass or fail on the Core Web Vitals assessment, and the share of visits that were good, needs work or poor.
+- Pages with too little traffic fall back to the whole site, and the tool says so.
+- What to fix for every metric that is not good. The same card is in every scan on [onpage.dev](https://onpage.dev).
 ## Uses the SEO data you already have
 
 Already connected Google Search Console, GA4, Ahrefs or Semrush to your assistant? OnPage.dev tells the assistant to pull their numbers in, then `prioritize_fixes` ranks every fix by the traffic it can win. Nothing connected? It ranks by severity, as before. You do not set anything up.
