@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 22
       - run: npm ci && npm run build
-      - uses: seoonpage/onpage-tools@v1
+      - uses: seoonpage/seo-mcp-server@v1
         with:
           paths: "dist/**/*.html"
           base-url: "https://example.com"

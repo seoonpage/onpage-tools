@@ -13,7 +13,7 @@
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
   <img alt="42 tools" src="https://img.shields.io/badge/tools-42-4f46e5">
-  <a href="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/onpage-tools/actions/workflows/test.yml/badge.svg"></a>
+  <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
 
@@ -521,7 +521,7 @@ Fix the SEO issues in this project, check the build with OnPage.dev and keep goi
 The server plus commands and skills that run the fix loop for you.
 
 ```
-/plugin marketplace add seoonpage/onpage-tools
+/plugin marketplace add seoonpage/seo-mcp-server
 /plugin install onpage@onpage-dev
 ```
 
@@ -547,7 +547,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: npm ci && npm run build
-      - uses: seoonpage/onpage-tools@v1
+      - uses: seoonpage/seo-mcp-server@v1
         with:
           paths: "dist/**/*.html"          # built HTML to check
           base-url: "https://example.com"   # optional, for canonical and relative links
@@ -584,7 +584,7 @@ Full details: [onpage.dev/privacy](https://onpage.dev/privacy) and [onpage.dev/t
 
 - Web app: [onpage.dev](https://onpage.dev)
 - MCP server and setup: [onpage.dev/mcp](https://onpage.dev/mcp)
-- Questions: [hi@onpage.dev](mailto:hi@onpage.dev) or [open an issue](https://github.com/seoonpage/onpage-tools/issues)
+- Questions: [hi@onpage.dev](mailto:hi@onpage.dev) or [open an issue](https://github.com/seoonpage/seo-mcp-server/issues)
 
 ## License
 

@@ -6,7 +6,7 @@ Please do not open a public issue for security problems.
 
 Report privately in one of two ways:
 
-- **GitHub:** use [Report a vulnerability](https://github.com/seoonpage/onpage-tools/security/advisories/new) on this repository.
+- **GitHub:** use [Report a vulnerability](https://github.com/seoonpage/seo-mcp-server/security/advisories/new) on this repository.
 - **Email:** hi@onpage.dev
 
 Include the URL or tool name, the steps to reproduce, and what an attacker could do with it. We confirm when we have it, keep you posted while we fix it, and credit you in the advisory if you want.

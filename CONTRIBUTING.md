@@ -4,10 +4,10 @@ Thanks for helping make OnPage.dev better. This repository holds the public part
 
 ## Ways to help
 
-- **Report a wrong result.** A check that flags something that is fine, or misses something that is broken, is the most useful report we get. Open a [bug report](https://github.com/seoonpage/onpage-tools/issues/new?template=bug.yml) with the URL (or the HTML) and what you expected.
-- **Suggest a check or tool.** Open a [feature request](https://github.com/seoonpage/onpage-tools/issues/new?template=feature.yml) and say which problem it solves for you.
+- **Report a wrong result.** A check that flags something that is fine, or misses something that is broken, is the most useful report we get. Open a [bug report](https://github.com/seoonpage/seo-mcp-server/issues/new?template=bug.yml) with the URL (or the HTML) and what you expected.
+- **Suggest a check or tool.** Open a [feature request](https://github.com/seoonpage/seo-mcp-server/issues/new?template=feature.yml) and say which problem it solves for you.
 - **Improve the Action, plugin, skills or docs.** Pull requests are welcome.
-- **Security issues** go through [private reporting](https://github.com/seoonpage/onpage-tools/security/advisories/new), never a public issue. See [SECURITY.md](SECURITY.md).
+- **Security issues** go through [private reporting](https://github.com/seoonpage/seo-mcp-server/security/advisories/new), never a public issue. See [SECURITY.md](SECURITY.md).
 
 ## Pull requests
 
