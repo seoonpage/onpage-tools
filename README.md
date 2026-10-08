@@ -80,7 +80,7 @@ The SEO MCP servers from Ahrefs, Semrush, SE Ranking and DataForSEO are built fo
 </p>
 
 <table>
-  <tr><th align="left">Step</th><th align="left"><img src="assets/logos/onpage.png" width="26" height="26" alt=""><br>OnPage.dev</th><th align="left"><img src="assets/logos/ahrefs.png" width="22" height="22" alt=""> <img src="assets/logos/semrush.png" width="22" height="22" alt=""> <img src="assets/logos/seranking.png" width="22" height="22" alt=""> <img src="assets/logos/dataforseo.png" width="22" height="22" alt=""><br>Data MCPs</th></tr>
+  <tr><th align="left">Step</th><th align="left"><img src="assets/logos/onpage.png" width="26" height="26" alt=""><br>OnPage.dev</th><th align="left"><img src="assets/logos/ahrefs.png" width="22" height="22" alt="">&nbsp;&nbsp;<img src="assets/logos/semrush.png" width="22" height="22" alt="">&nbsp;&nbsp;<img src="assets/logos/seranking.png" width="22" height="22" alt="">&nbsp;&nbsp;<img src="assets/logos/dataforseo.png" width="22" height="22" alt=""><br>Data MCPs</th></tr>
   <tr><td><b>Search data: rankings, keywords, backlinks</b></td><td>✅ Uses yours, from Search Console, GA4, Ahrefs or Semrush in the same chat</td><td>Their core strength</td></tr>
   <tr><td><b>Find what is wrong on the page</b></td><td>✅ <code>scan_page</code>, <code>deep_audit</code>, <code>render_page</code>: Google, AI search, speed, accessibility</td><td>Site audit data in some of them</td></tr>
   <tr><td><b>Write the fix from the page itself</b></td><td>✅ <code>get_fix_pack</code>, <code>generate_schema</code></td><td><i>Not what they are built for</i></td></tr>
