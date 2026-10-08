@@ -18,7 +18,24 @@
 </p>
 
 <p align="center">
+  <sub><b>Runs in</b></sub>&nbsp;&nbsp;
+  <img src="assets/logos/claude.png" width="22" height="22" align="absmiddle" alt="">&nbsp;Claude&nbsp;&nbsp;&nbsp;
+  <img src="assets/logos/chatgpt.png" width="22" height="22" align="absmiddle" alt="">&nbsp;ChatGPT&nbsp;&nbsp;&nbsp;
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/logos/cursor-dark.png"><img src="assets/logos/cursor.png" width="22" height="22" align="absmiddle" alt=""></picture>&nbsp;Cursor&nbsp;&nbsp;&nbsp;
+  <img src="assets/logos/vscode.png" width="22" height="22" align="absmiddle" alt="">&nbsp;VS&nbsp;Code
+  <br><br>
+  <sub><b>Checks your site for</b></sub>&nbsp;&nbsp;
+  <img src="assets/logos/chatgpt.png" width="22" height="22" align="absmiddle" alt="">&nbsp;ChatGPT&nbsp;&nbsp;&nbsp;
+  <img src="assets/logos/claude.png" width="22" height="22" align="absmiddle" alt="">&nbsp;Claude&nbsp;&nbsp;&nbsp;
+  <img src="assets/logos/gemini.png" width="22" height="22" align="absmiddle" alt="">&nbsp;Gemini&nbsp;&nbsp;&nbsp;
+  <img src="assets/logos/perplexity.png" width="22" height="22" align="absmiddle" alt="">&nbsp;Perplexity&nbsp;&nbsp;&nbsp;
+  <sub><b>Ships fixes to</b></sub>&nbsp;&nbsp;
+  <img src="assets/logos/wordpress.png" width="22" height="22" align="absmiddle" alt="">&nbsp;WordPress
+</p>
+
+<p align="center">
   <a href="#install-in-one-minute">Install</a> ·
+  <a href="#they-bring-the-data-onpagedev-closes-the-loop">Data vs results</a> ·
   <a href="#uses-the-seo-data-you-already-have">Your SEO data</a> ·
   <a href="#the-whole-loop-inside-your-ai-agent">The whole loop</a> ·
   <a href="#from-finding-to-done">From finding to done</a> ·
@@ -50,6 +67,48 @@ Assistant:  scan_page            46/100  no meta description, no H1, title 14 ch
 
             Done. 46 to 94. Two prices in the JSON-LD still need your real values.
 ```
+
+## They bring the data. OnPage.dev closes the loop.
+
+The SEO MCP servers from Ahrefs, Semrush, SE Ranking and DataForSEO are built for data: what ranks, who links, what people search. Then the real work starts. OnPage.dev does that part, inside the same chat, and uses their numbers to decide what to fix first.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/loop-dark.png">
+    <img src="assets/loop-light.png" width="720" alt="Step 1, data from Ahrefs, Semrush, SE Ranking or DataForSEO, is passed to OnPage.dev, which takes over: 2 find, 3 fix, 4 check, 5 ship, 6 notify, 7 prove. The results flow back into your data and the loop starts again.">
+  </picture>
+</p>
+
+<table>
+  <tr><th align="left">Step</th><th align="left"><img src="assets/logos/onpage.png" width="26" height="26" alt=""><br>OnPage.dev</th><th align="left"><img src="assets/logos/ahrefs.png" width="22" height="22" alt=""> <img src="assets/logos/semrush.png" width="22" height="22" alt=""> <img src="assets/logos/seranking.png" width="22" height="22" alt=""> <img src="assets/logos/dataforseo.png" width="22" height="22" alt=""><br>Data MCPs</th></tr>
+  <tr><td><b>Search data: rankings, keywords, backlinks</b></td><td>✅ Uses yours, from Search Console, GA4, Ahrefs or Semrush in the same chat</td><td>Their core strength</td></tr>
+  <tr><td><b>Find what is wrong on the page</b></td><td>✅ <code>scan_page</code>, <code>deep_audit</code>, <code>render_page</code>: Google, AI search, speed, accessibility</td><td>Site audit data in some of them</td></tr>
+  <tr><td><b>Write the fix from the page itself</b></td><td>✅ <code>get_fix_pack</code>, <code>generate_schema</code></td><td><i>Not what they are built for</i></td></tr>
+  <tr><td><b>Ship it where the code lives</b></td><td>✅ Yoast SEO and Rank Math fields, or a Git pull request for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue</td><td><i>Not what they are built for</i></td></tr>
+  <tr><td><b>Check it before deploy</b></td><td>✅ <code>scan_html</code> and <code>compare_html</code> on unpublished HTML</td><td><i>Not what they are built for</i></td></tr>
+  <tr><td><b>Tell search engines</b></td><td>✅ <code>submit_indexnow</code>, plus URL Inspection through your Search Console</td><td><i>Not what they are built for</i></td></tr>
+  <tr><td><b>Cover the AI Mode fan-out</b></td><td>✅ <code>check_question_coverage</code>: every sub-question answered, buried or missing</td><td><i>Not what they are built for</i></td></tr>
+  <tr><td><b>Prove the result</b></td><td>✅ <code>measure_impact</code>: before and after, against pages you did not touch</td><td>Their numbers are the input</td></tr>
+  <tr><td><b>Price to start</b></td><td>✅ <b>Free.</b> No account, no API key</td><td>A paid plan or prepaid credits</td></tr>
+</table>
+
+<table>
+  <tr><th align="left">Same question to a data MCP</th><th align="left">Same question to OnPage.dev</th></tr>
+  <tr>
+    <td valign="top"><pre>/pricing ranks #14
+"seo tool pricing": 1.2k a month
+3 referring domains
+Top 3 results: 40+ each</pre>Useful facts. The next step is yours.</td>
+    <td valign="top"><pre>Title cut off, no canonical
+Pricing section skips the answer
+Fix in Next.js, checked: 58 → 91
+Pull request #42 opened
+IndexNow sent
+4 weeks: +38% clicks (others +4%)</pre>Closed, from finding to result.</td>
+  </tr>
+</table>
+
+<sub>An example of the two kinds of answer. Prices, plans and the full comparison: <a href="https://onpage.dev/compare">onpage.dev/compare</a>. Built by an SEO specialist with 24 years of experience; the scoring method is public at <a href="https://onpage.dev/methodology">onpage.dev/methodology</a>.</sub>
 
 ## The whole loop, inside your AI agent
 
