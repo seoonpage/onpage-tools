@@ -53,6 +53,7 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - Pages missing from Google? Fetch URL Inspection results with the Search Console tool and call `explain_index_status`.
 - For the site's topics, fetch Search Console rows by query and page and call `map_topics` with them (and the audit id). Fix competing pages first, then write pages for the topic gaps.
 - To see how link authority flows, call `map_link_equity` with the audit id, and pass the top pages from Search Console or GA4 as `important_urls` when available. Fix unreachable and weak important pages first.
+- After a site audit, also run `find_duplicate_content` and `check_url_parameters`, and check the sitemap with `check_sitemap`. To verify a template fix across pages, use `extract_from_pages`.
 - For orphan pages or new content, call `suggest_internal_links` with the audit id and add the links in body text.
 - To see what the pages that rank do better, call `compare_pages` with the page and up to 3 competitors (call again until complete).
 - For a client-side React, Vue or Angular app, the scan renders the page in a real browser and reports how many words crawlers without JavaScript get. If that gap is large, propose prerendering or server rendering for the key routes.

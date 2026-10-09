@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="63 tools" src="https://img.shields.io/badge/tools-63-4f46e5">
+  <img alt="67 tools" src="https://img.shields.io/badge/tools-67-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -360,6 +360,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **No gaps in the technical audit.** `check_sitemap` checks format, limits and lastmod dates and samples the listed URLs for redirects, errors, noindex and canonicals elsewhere. `extract_from_pages` pulls one value from up to 20 pages (CSS selector, regex or JSON-LD path). `find_duplicate_content` groups near-duplicate pages from an audit by their own content, and `check_url_parameters` finds tracking, search and filter URLs that trap crawlers.
 - **Measures more than clicks.** `diagnose_traffic_drop` explains a drop page by page (lost rankings, lower demand, fewer clicks at the same position, pages that dropped out), `find_ctr_gaps` and `find_striking_distance` find the fastest wins in Search Console data, `check_vitals_trend` shows real-user speed weekly for about 9 months before and after a fix, and `measure_ai_citations` proves the gains in AI answers against a control group.
 - **Fixes a whole section, and JavaScript apps.** `build_edge_rules` turns a site audit into one Cloudflare Worker rule per section (titles, descriptions, canonicals, social tags on every matching page, with a preview). `get_prerender_worker` serves GPTBot, ClaudeBot and PerplexityBot the rendered page of a React, Vue or Angular app from Browser Rendering in your own Cloudflare account.
 - **Explains why Google skips a page.** `explain_index_status` turns Search Console URL Inspection results into causes, fixes and the next tool, and every scan catches a head that ends early (an image or iframe in `<head>` that hides the canonical).
@@ -460,7 +461,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-63 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+67 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -512,6 +513,8 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 15 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
 | `submit_indexnow` | Tell Bing, Yandex and other IndexNow engines that pages changed, right after a fix goes live. Sets up the key file the first time | `12 URLs accepted` |
 | `analyze_logs` | What Googlebot, Bingbot and 14 AI crawlers really request, from your access logs: hits per bot, errors and redirects they get, crawl budget on parameters, and sitemap pages Googlebot never visits | `GPTBot: 212 hits, 9% errors` |
+| `find_duplicate_content` | Near-duplicate pages from a site audit, grouped by the text outside menus, header and footer, with the page to keep and what to do with the rest (canonical, merge, rewrite, or variants as options for product pages) | `2 groups, 8 pages` |
+| `check_url_parameters` | Every query parameter in the audit's links classified as tracking, session, search, sort, pagination or filter, with crawl traps, pagination canonicals and the robots.txt rules to fix them | `utm in 14 internal links` |
 | `explain_index_status` | Search Console URL Inspection results (or Pages report rows) grouped by cause, most serious first: noindex, robots.txt, a canonical Google ignores, crawled or discovered but not indexed, soft 404, server and redirect errors, with the fix and the next tool | `12 crawled, not indexed` |
 | `check_hreflang` | Multilingual sites: valid language and region codes, x-default, then every language version: status, noindex, canonical, return tags and html lang. Returns the corrected tag set | `4 versions, 1 missing return tag` |
 | `check_trust_signals` | E-E-A-T across the site: About, Contact, Privacy and Terms pages (found in English, Dutch, German, French and Spanish), email, phone, address, company and VAT numbers, Organization markup, social profiles, author and dates | `6 of 8 checks pass` |
@@ -532,6 +535,8 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | Tool | What it does | Example result |
 |---|---|---|
 | `check_urls` | Status codes and full redirect chains for up to 20 URLs, checked against where each should land. Flags chains and temporary redirects | `19 of 20 OK` |
+| `check_sitemap` | The XML sitemap: found through robots.txt, index followed, format and limits, foreign hosts, fake or future lastmod dates, plus a sample of listed URLs checked for redirects, errors, noindex and canonicals elsewhere, with corrected entries | `4 of 12 URLs do not belong` |
+| `extract_from_pages` | One value from up to 20 pages, by CSS selector (with an attribute), regular expression or JSON-LD path such as `Product.offers.price`, to verify a template fix at scale | `18 of 20 have a price` |
 | `plan_redirects` | Old URLs to new ones with a confidence score per match, written as `_redirects`, nginx, Apache, Next.js or CSV rules | `212 matched, 9 to review` |
 | `test_robots` | May Googlebot, GPTBot, ClaudeBot or any crawler fetch this URL? Uses Google's matching rules and returns the exact deciding rule. Can test a proposed robots.txt too | `Blocked by "Disallow: /search?"` |
 
