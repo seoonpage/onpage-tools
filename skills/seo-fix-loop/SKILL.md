@@ -37,6 +37,9 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - Then call `submit_indexnow` with the changed URLs so Bing and other IndexNow engines recrawl them. The first call returns a key file: add it to the folder served at the site root and ship it with the fix. If Google Search Console is connected, run URL Inspection on the changed URLs too.
 
 ## Prove it
+- Traffic dropped? Fetch two Search Console periods and call `diagnose_traffic_drop` before changing anything.
+- Looking for quick wins? `find_ctr_gaps` (titles that do not get clicked) and `find_striking_distance` (queries at positions 8 to 20).
+- After a speed fix, `check_vitals_trend` with the change date shows whether real users noticed; for AI answers, `measure_ai_citations` with before and after counts.
 - A few weeks after the fixes are live, offer `measure_impact` with the `fix_log_id`: fetch Search Console, GA4 or Ahrefs numbers for 28 days before and after the fix date, for the changed pages and a few unchanged ones, and pass them with changed true or false.
 
 ## Hand it to the team

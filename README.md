@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="58 tools" src="https://img.shields.io/badge/tools-58-4f46e5">
+  <img alt="63 tools" src="https://img.shields.io/badge/tools-63-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -122,7 +122,7 @@ Most SEO tools stop at a report. OnPage.dev gives an agent every step, and each 
 | **Check** | The new HTML and JSON-LD tested before deploy, then confirmed live | `scan_html`, `validate_schema`, `compare_html`, `rescan_and_compare` |
 | **Act** | Every shipped fix logged with its old and new value, and the plan sent to Google Sheets, Slack, Notion or the task board | `log_fix`, `export_findings`, `share_result` |
 | **Watch** | Every logged fix checked about every 6 hours, with the restore code sent to your webhook when a deploy undoes one | `get_fix_log`, `watch_page` |
-| **Measure** | Search Console, GA4 or Ahrefs numbers from before and after, against pages you did not touch, saved per fix with a rollback plan and a client report | `measure_impact`, `get_fix_log` |
+| **Measure** | Clicks, AI citations and real-user speed before and after, against pages you did not touch, saved per fix with a rollback plan and a client report. Plus why traffic dropped, page-1 results nobody clicks and queries almost on page 1 | `measure_impact`, `measure_ai_citations`, `check_vitals_trend`, `diagnose_traffic_drop`, `find_ctr_gaps`, `find_striking_distance`, `get_fix_log` |
 
 ```
 Four weeks later...
@@ -360,6 +360,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **Measures more than clicks.** `diagnose_traffic_drop` explains a drop page by page (lost rankings, lower demand, fewer clicks at the same position, pages that dropped out), `find_ctr_gaps` and `find_striking_distance` find the fastest wins in Search Console data, `check_vitals_trend` shows real-user speed weekly for about 9 months before and after a fix, and `measure_ai_citations` proves the gains in AI answers against a control group.
 - **Fixes a whole section, and JavaScript apps.** `build_edge_rules` turns a site audit into one Cloudflare Worker rule per section (titles, descriptions, canonicals, social tags on every matching page, with a preview). `get_prerender_worker` serves GPTBot, ClaudeBot and PerplexityBot the rendered page of a React, Vue or Angular app from Browser Rendering in your own Cloudflare account.
 - **Explains why Google skips a page.** `explain_index_status` turns Search Console URL Inspection results into causes, fixes and the next tool, and every scan catches a head that ends early (an image or iframe in `<head>` that hides the canonical).
 - **Watches your competitors.** `watch_page` with `competitor_of` follows a competitor's page; when they add a section, structured data or a lot more text, the alert says what your page is missing and which tool fixes it.
@@ -459,7 +460,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-58 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+63 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -480,6 +481,11 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
 | `measure_impact` | Before and after numbers from Search Console, GA4, Ahrefs or Semrush for the changed pages, against unchanged pages as a control group, with what changed per page from the watch history | `+66% clicks vs control` |
+| `diagnose_traffic_drop` | Why traffic dropped: two Search Console periods compared page by page, split into lost rankings, lower search demand, fewer clicks at the same position (AI Overview or snippet) and pages that dropped out, ranked by lost clicks, with the next tool per cause | `3 pages lost rankings` |
+| `find_ctr_gaps` | Page-1 results whose click-through rate is far below normal for their position, with the clicks a better title and description could win | `+700 clicks from 4 titles` |
+| `find_striking_distance` | Queries at positions 8 to 20 with real impressions, grouped per page, with the clicks a move into the top 5 could win and pages competing for the same query | `23 queries, +1,900 clicks` |
+| `check_vitals_trend` | Core Web Vitals from real Chrome users, weekly for about 9 months on phone and desktop, from the Chrome UX Report history. Before and after a fix date, and since when each metric passes | `LCP 4.2 s → 2.2 s` |
+| `measure_ai_citations` | AI citations before and after the fixes, per engine (ChatGPT, Perplexity, AI Overviews, AI Mode, Gemini, Copilot), against pages you did not change | `+190% vs control` |
 | `log_fix` | Log fixes after they ship (page, field, old and new value, how it shipped). OnPage.dev checks about every 6 hours that each one is still live and posts the restore code to a webhook when a deploy undoes it | `4 fixes logged, all live` |
 | `get_fix_log` | The fix log: still live, undone or changed, the restore code, impact per fix from `measure_impact`, a rollback plan for fixes that did worse, and a client-ready monthly report without OnPage.dev branding, plus GA4 annotations for every day fixes shipped | `1 undone, restore ready` |
 | `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, low-contrast text, what scrolls sideways, mixed buttons, uneven spacing, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
