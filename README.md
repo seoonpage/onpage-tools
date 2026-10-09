@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="50 tools" src="https://img.shields.io/badge/tools-50-4f46e5">
+  <img alt="52 tools" src="https://img.shields.io/badge/tools-52-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -357,6 +357,7 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **Local and linked.** `check_local_seo` checks LocalBusiness markup, NAP consistency, the Google Business Profile link and a page per location; `map_link_equity` maps internal PageRank and click depth and shows which important pages need more links.
 - **Ready for AI Mode.** `check_question_coverage` checks a page against the sub-questions AI search fans out for a topic, and shows the gaps where AI will cite someone else.
 - **Accessibility for the EAA.** `check_accessibility` maps every check to WCAG 2.1 AA, the standard behind the European Accessibility Act.
 - **Ecommerce and consent.** `check_product_page` checks Product markup for merchant listings; `check_consent` checks the cookie banner and Consent Mode v2.
@@ -446,7 +447,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-50 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+52 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -472,6 +473,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 |---|---|---|
 | `start_site_audit` | Audit up to 25 pages from the sitemap as a job. Returns an `audit_id` and the first progress | `3 of 25 scanned` |
 | `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
+| `map_link_equity` | Internal PageRank and click depth from a finished audit: pages the home page cannot reach, pages too deep, dead ends, strong pages that pass little on, links through redirects or to broken and noindex pages, and important pages (from Search Console or GA4) with too few links | `3 important pages need links` |
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
 | `map_topics` | Topic clusters from Search Console rows: which page owns each topic, where pages compete, topics without their own page, pages without search demand and the internal links to add | `14 topics, 3 compete, 2 gaps` |
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
@@ -489,6 +491,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `analyze_logs` | What Googlebot, Bingbot and 14 AI crawlers really request, from your access logs: hits per bot, errors and redirects they get, crawl budget on parameters, and sitemap pages Googlebot never visits | `GPTBot: 212 hits, 9% errors` |
 | `check_hreflang` | Multilingual sites: valid language and region codes, x-default, then every language version: status, noindex, canonical, return tags and html lang. Returns the corrected tag set | `4 versions, 1 missing return tag` |
 | `check_trust_signals` | E-E-A-T across the site: About, Contact, Privacy and Terms pages (found in English, Dutch, German, French and Spanish), email, phone, address, company and VAT numbers, Organization markup, social profiles, author and dates | `6 of 8 checks pass` |
+| `check_local_seo` | Local businesses: LocalBusiness markup (specific type, address, phone, opening hours, geo), whether name, address and phone match the pages, the Google Business Profile link, a map, the city in the title, and a page with its own markup per location. Writes corrected JSON-LD with TODOs | `NAP mismatch: phone` |
 | `check_question_coverage` | Coverage for AI Mode and AI Overviews: your assistant writes the sub-questions an AI search engine fans out for a topic, the tool rates each one answered, buried, partial or missing on your page (and up to 2 competitors) and lists the sections to add | `60/100, 2 missing` |
 | `check_answer_format` | Featured snippets and People Also Ask: the answer format that wins on the pages that rank (paragraph and length, list and items, or table) against your section, with the rewrite | `Winning: list of 7, yours: paragraph` |
 | `find_answer_passages` | Does the page answer a question well enough for AI to quote it? Returns the best passages with length and fit | `Best passage, 64 words` |
