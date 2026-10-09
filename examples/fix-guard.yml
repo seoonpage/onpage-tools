@@ -1,0 +1,14 @@
+name: SEO fix guard
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seoonpage/seo-mcp-server/guard@v1
+        with:
+          fix-log-id: "YOUR_FIX_LOG_ID"   # from log_fix

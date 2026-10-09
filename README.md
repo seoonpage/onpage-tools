@@ -48,6 +48,7 @@
   <a href="#why-it-is-different">Why it is different</a> ·
   <a href="#claude-code-plugin">Claude Code plugin</a> ·
   <a href="#github-action-seo-gate">GitHub Action</a> ·
+  <a href="#github-action-fix-guard">Fix guard</a> ·
   <a href="https://onpage.dev">onpage.dev</a>
 </p>
 
@@ -648,12 +649,35 @@ The pull request gets a comment like this, updated on every push:
 > | `dist/about/index.html` | **36** | 0 | There is no meta description; There is no H1; The title is 5 characters |
 > | `dist/index.html` | 90 | 22 | Thin content: 32 words; No structured data; Open Graph is incomplete |
 
+## GitHub Action: fix guard
+
+Keeps shipped fixes live. Once a day it asks OnPage.dev whether every fix in your fix log is still on the page. When a deploy undid one, it opens an issue with the restore code; when all are live again, it closes the issue. It uses the repository's own token, so OnPage.dev never gets access to GitHub.
+
+```yaml
+name: SEO fix guard
+on:
+  schedule:
+    - cron: "0 7 * * *"
+permissions:
+  issues: write
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seoonpage/seo-mcp-server/guard@v1
+        with:
+          fix-log-id: "YOUR_FIX_LOG_ID"   # from log_fix
+          fail-on-regression: "false"     # true to fail the run as well
+```
+
+Your coding agent can pick the issue up and open the pull request with the value restored.
+
 ## Security and privacy
 
-- **Nothing changes on your site.** Every tool only reads public pages or the HTML you send. Watches and shared result pages store scores and issue names, never page content.
+- **Nothing changes on your site by itself.** OnPage.dev only reads public pages or the HTML you send. Fixes ship through your own tools (your git, your WordPress, your Cloudflare), after you approve them. Watches and shared result pages store scores and issue names, never page content; fix logs store the URLs and the old and new values you log.
 - **Public pages only.** Private, internal and local network addresses are refused (SSRF protection), and so are non-web schemes.
 - **No storage of content.** HTML sent to `scan_html` is analysed in memory and dropped. For change tracking, only the score and issue names are kept, under a hashed key, for up to 30 days.
-- **Your traffic data stays yours.** Numbers passed to `prioritize_fixes` are used for that answer only. OnPage.dev never connects to Search Console, GA4, Ahrefs or Semrush itself.
+- **Your traffic data stays yours.** Numbers passed to `prioritize_fixes` or `measure_impact` are used for that answer only, except that `measure_impact` with a `fix_log_id` saves the before, after and change per logged page in that fix log. OnPage.dev never connects to Search Console, GA4, Ahrefs or Semrush itself.
 - **Prompt injection aware.** Text from scanned pages is returned as data and marked as such.
 - **Fair use limits.** About 20 scans per minute per connection, plus a shared cap. Real-browser checks (`render_page`, `screen_reader_view`) share a daily budget; with your own browser tool, `get_layout_probe` has no limit. No accounts, no keys, no tracking cookies.
 

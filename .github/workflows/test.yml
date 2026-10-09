@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: node --test test/gate.test.mjs
+      - run: node --test test/gate.test.mjs test/guard.test.mjs
   gate:
     runs-on: ubuntu-latest
     steps:

@@ -1,0 +1,34 @@
+name: OnPage.dev fix guard
+description: Check that the SEO fixes in an OnPage.dev fix log are still live, and open an issue with the restore code when a deploy undid one. Free, no key.
+author: OnPage.dev
+branding:
+  icon: shield
+  color: purple
+inputs:
+  fix-log-id:
+    description: The fix_log_id that log_fix returned.
+    required: true
+  label:
+    description: Label for the issue.
+    default: seo-fix-guard
+  fail-on-regression:
+    description: Fail the run when a fix is no longer live.
+    default: "false"
+  github-token:
+    description: Token used to open and close the issue.
+    default: ${{ github.token }}
+outputs:
+  undone:
+    description: Number of fixes that are no longer live.
+    value: ${{ steps.guard.outputs.undone }}
+runs:
+  using: composite
+  steps:
+    - id: guard
+      shell: bash
+      run: node "${{ github.action_path }}/../action/fix-guard.mjs"
+      env:
+        INPUT_FIX_LOG_ID: ${{ inputs.fix-log-id }}
+        INPUT_LABEL: ${{ inputs.label }}
+        INPUT_FAIL_ON_REGRESSION: ${{ inputs.fail-on-regression }}
+        INPUT_TOKEN: ${{ inputs.github-token }}
