@@ -29,6 +29,8 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - For a change to an existing page, call `compare_html` with the old and new HTML and make sure nothing regressed (no new noindex, canonical or title loss).
 - When URLs change, call `check_urls` on the old URLs with the new ones as `expected`, and `test_robots` on key pages.
 - Ship on a new branch and open a pull request with the user's git tools (`gh pr create`). List each change as old and new value. Never commit to the default branch and never merge yourself.
+- The same problem on many pages of a section? After a site audit, call `build_edge_rules` and deploy its Worker instead of fixing pages one by one.
+- A client-side React, Vue or Angular app that AI crawlers see as empty? Call `get_prerender_worker` (server-side rendering stays the long-term fix).
 - No repo access, or a CMS that is hard to change? If the domain runs through the user's own Cloudflare account, call `get_fix_pack` with `platform: "cloudflare"` and deploy the Worker with the user's Cloudflare connection, after the user approves the values.
 - Once a fix is live, call `log_fix` with the old and new value of each change (keep the fix_log_id; offer a webhook). OnPage.dev then checks it stays live and sends the restore code when a deploy undoes it.
 - After the user deploys, call `rescan_and_compare` on the live URL to confirm what got fixed and catch anything new.
@@ -45,6 +47,7 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 
 ## Whole sites and competitors
 - For a whole site, call `start_site_audit`, then `get_site_audit` with the returned id until status is complete. Fix the issues that affect the most pages first.
+- Pages missing from Google? Fetch URL Inspection results with the Search Console tool and call `explain_index_status`.
 - For the site's topics, fetch Search Console rows by query and page and call `map_topics` with them (and the audit id). Fix competing pages first, then write pages for the topic gaps.
 - To see how link authority flows, call `map_link_equity` with the audit id, and pass the top pages from Search Console or GA4 as `important_urls` when available. Fix unreachable and weak important pages first.
 - For orphan pages or new content, call `suggest_internal_links` with the audit id and add the links in body text.

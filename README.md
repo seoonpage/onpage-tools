@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="55 tools" src="https://img.shields.io/badge/tools-55-4f46e5">
+  <img alt="58 tools" src="https://img.shields.io/badge/tools-58-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -360,6 +360,8 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **Fixes a whole section, and JavaScript apps.** `build_edge_rules` turns a site audit into one Cloudflare Worker rule per section (titles, descriptions, canonicals, social tags on every matching page, with a preview). `get_prerender_worker` serves GPTBot, ClaudeBot and PerplexityBot the rendered page of a React, Vue or Angular app from Browser Rendering in your own Cloudflare account.
+- **Explains why Google skips a page.** `explain_index_status` turns Search Console URL Inspection results into causes, fixes and the next tool, and every scan catches a head that ends early (an image or iframe in `<head>` that hides the canonical).
 - **Watches your competitors.** `watch_page` with `competitor_of` follows a competitor's page; when they add a section, structured data or a lot more text, the alert says what your page is missing and which tool fixes it.
 - **Every fix in your GA4 charts and your repo.** `get_fix_log` with `format: "annotations"` marks each fix day in GA4, and the [fix guard](#github-action-fix-guard) GitHub Action opens an issue with the restore code when a deploy undoes a fix.
 - **Debugs your GA4.** `check_ga4_tracking` captures the hits a page really sends to Google in a real browser, before and after accepting cookies and on a return visit: double counting, tracking before consent, a banner that never updates Consent Mode, debug mode left on, Universal Analytics leftovers.
@@ -457,7 +459,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-55 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+58 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -466,6 +468,8 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `scan_page` | Score from 0 to 100, the issues to fix first with why and how, AI readiness and key facts | `46/100, 5 fixes` |
 | `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
 | `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content. With `platform: "git"`: code for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue and the steps for a pull request. With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection. With `platform: "cloudflare"`: a Cloudflare Worker that applies the fixes at the edge, on any CMS | `<title>`, `<meta>`, canonical, social tags |
+| `build_edge_rules` | From a finished site audit, one Cloudflare Worker rule per section (for example `/products/*`) that fixes missing or badly sized titles and descriptions, missing canonicals and social tags on every matching page, with a preview. Only fills what is missing or out of range | `/products/*: 212 pages` |
+| `get_prerender_worker` | For client-side React, Vue and Angular apps: a Worker that serves AI crawlers the rendered page from Browser Rendering in your own Cloudflare account, cached for a day, while visitors and Google get the normal page. Says so when it is not needed | `12 → 900 words for GPTBot` |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `check_accessibility` | WCAG 2.1 AA report for the European Accessibility Act: every automated check mapped to its success criterion, contrast and reflow from the real-browser check, and what to test by hand | `9 of 11 criteria pass` |
 | `check_product_page` | Ecommerce product page: Product and Offer markup, price, stock, identifiers, shipping and return policy for merchant listings, variants, out-of-stock handling and filter URLs | `2 errors, 3 warnings` |
@@ -502,6 +506,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_ai_visibility` | Which AI crawlers may read the page (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and more), llms.txt, 15 checks for AI answers, and the page as a model reads it | `7 of 8 crawlers allowed` |
 | `submit_indexnow` | Tell Bing, Yandex and other IndexNow engines that pages changed, right after a fix goes live. Sets up the key file the first time | `12 URLs accepted` |
 | `analyze_logs` | What Googlebot, Bingbot and 14 AI crawlers really request, from your access logs: hits per bot, errors and redirects they get, crawl budget on parameters, and sitemap pages Googlebot never visits | `GPTBot: 212 hits, 9% errors` |
+| `explain_index_status` | Search Console URL Inspection results (or Pages report rows) grouped by cause, most serious first: noindex, robots.txt, a canonical Google ignores, crawled or discovered but not indexed, soft 404, server and redirect errors, with the fix and the next tool | `12 crawled, not indexed` |
 | `check_hreflang` | Multilingual sites: valid language and region codes, x-default, then every language version: status, noindex, canonical, return tags and html lang. Returns the corrected tag set | `4 versions, 1 missing return tag` |
 | `check_trust_signals` | E-E-A-T across the site: About, Contact, Privacy and Terms pages (found in English, Dutch, German, French and Spanish), email, phone, address, company and VAT numbers, Organization markup, social profiles, author and dates | `6 of 8 checks pass` |
 | `check_local_seo` | Local businesses: LocalBusiness markup (specific type, address, phone, opening hours, geo), whether name, address and phone match the pages, the Google Business Profile link, a map, the city in the title, and a page with its own markup per location. Writes corrected JSON-LD with TODOs | `NAP mismatch: phone` |
