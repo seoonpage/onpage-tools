@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="53 tools" src="https://img.shields.io/badge/tools-53-4f46e5">
+  <img alt="55 tools" src="https://img.shields.io/badge/tools-55-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -117,11 +117,11 @@ Most SEO tools stop at a report. OnPage.dev gives an agent every step, and each 
 | Step | What happens | Tools |
 |---|---|---|
 | **Find** | What is wrong for Google, AI search, phones and screen readers, ranked by the traffic it can win | `scan_page`, `start_site_audit`, `render_page`, `screen_reader_view`, `prioritize_fixes`, `match_intent`, `check_readability` |
-| **Fix** | Ready code from the page's own content: tags, JSON-LD, robots.txt, llms.txt, redirect rules | `get_fix_pack`, `generate_schema`, `ai_crawler_policy`, `plan_redirects` |
+| **Fix** | Ready code from the page's own content, shipped as a pull request, through WordPress or at the edge with a Cloudflare Worker on any CMS | `get_fix_pack`, `generate_schema`, `ai_crawler_policy`, `plan_redirects` |
 | **Check** | The new HTML and JSON-LD tested before deploy, then confirmed live | `scan_html`, `validate_schema`, `compare_html`, `rescan_and_compare` |
-| **Act** | The plan sent to Google Sheets, Slack, Notion or the task board | `export_findings`, `share_result` |
-| **Watch** | A daily check that alerts when something breaks again | `watch_page` |
-| **Measure** | Search Console, GA4 or Ahrefs numbers from before and after, against pages you did not touch | `measure_impact` |
+| **Act** | Every shipped fix logged with its old and new value, and the plan sent to Google Sheets, Slack, Notion or the task board | `log_fix`, `export_findings`, `share_result` |
+| **Watch** | Every logged fix checked about every 6 hours, with the restore code sent to your webhook when a deploy undoes one | `get_fix_log`, `watch_page` |
+| **Measure** | Search Console, GA4 or Ahrefs numbers from before and after, against pages you did not touch, saved per fix with a rollback plan and a client report | `measure_impact`, `get_fix_log` |
 
 ```
 Four weeks later...
@@ -350,6 +350,8 @@ And three more jobs agents get asked to do every week:
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Takes action, not notes.** Your agent ships the fix itself: a pull request in your framework, a change through your own WordPress connection, or a Cloudflare Worker from `get_fix_pack` with `platform: "cloudflare"` that corrects the tags as the page is served, on any CMS on your own Cloudflare account. One step to roll back.
+- **Closes the loop for real.** `log_fix` records every fix that shipped. OnPage.dev checks about every 6 hours that each one is still live, sends the restore code to your webhook when a deploy undoes it, saves `measure_impact` results per fix with a rollback plan when one did worse, and `get_fix_log` writes the client report.
 - **Proves the result.** `measure_impact` compares before and after numbers against a control group of unchanged pages. [More](#the-whole-loop-inside-your-ai-agent).
 - **From finding to done.** `export_findings` sends the plan to Google Sheets (no connector needed), Slack, Notion or a task board. [More](#from-finding-to-done).
 - **Sees every reader.** First screen on phone, tablet and desktop in a real browser, and the page read aloud like a screen reader. [More](#seen-by-every-reader).
@@ -452,7 +454,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-53 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+55 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -460,7 +462,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 |---|---|---|
 | `scan_page` | Score from 0 to 100, the issues to fix first with why and how, AI readiness and key facts | `46/100, 5 fixes` |
 | `deep_audit` | Everything measured, by section: speed hints, links and anchor texts, accessibility, image SEO, rich results, security headers, content and technical facts | `8 sections` |
-| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content. With `platform: "git"`: code for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue and the steps for a pull request. With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection | `<title>`, `<meta>`, canonical, social tags |
+| `get_fix_pack` | Ready-to-paste HTML for every issue, written from the page's own content. With `platform: "git"`: code for Next.js, Nuxt, SvelteKit, Astro, Angular, React or Vue and the steps for a pull request. With `platform: "wordpress"`: the Yoast SEO or Rank Math field per value and the steps to ship it through your WordPress connection. With `platform: "cloudflare"`: a Cloudflare Worker that applies the fixes at the edge, on any CMS | `<title>`, `<meta>`, canonical, social tags |
 | `generate_schema` | Article, Product, FAQ, Organization or breadcrumb JSON-LD, validated against Google's rich result rules. Values it cannot read are marked TODO, never invented | `Product: eligible` |
 | `check_accessibility` | WCAG 2.1 AA report for the European Accessibility Act: every automated check mapped to its success criterion, contrast and reflow from the real-browser check, and what to test by hand | `9 of 11 criteria pass` |
 | `check_product_page` | Ecommerce product page: Product and Offer markup, price, stock, identifiers, shipping and return policy for merchant listings, variants, out-of-stock handling and filter URLs | `2 errors, 3 warnings` |
@@ -471,6 +473,8 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
 | `measure_impact` | Before and after numbers from Search Console, GA4, Ahrefs or Semrush for the changed pages, against unchanged pages as a control group, with what changed per page from the watch history | `+66% clicks vs control` |
+| `log_fix` | Log fixes after they ship (page, field, old and new value, how it shipped). OnPage.dev checks about every 6 hours that each one is still live and posts the restore code to a webhook when a deploy undoes it | `4 fixes logged, all live` |
+| `get_fix_log` | The fix log: still live, undone or changed, the restore code, impact per fix from `measure_impact`, a rollback plan for fixes that did worse, and a client-ready monthly report without OnPage.dev branding | `1 undone, restore ready` |
 | `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, low-contrast text, what scrolls sideways, mixed buttons, uneven spacing, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors

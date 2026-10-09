@@ -29,13 +29,16 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - For a change to an existing page, call `compare_html` with the old and new HTML and make sure nothing regressed (no new noindex, canonical or title loss).
 - When URLs change, call `check_urls` on the old URLs with the new ones as `expected`, and `test_robots` on key pages.
 - Ship on a new branch and open a pull request with the user's git tools (`gh pr create`). List each change as old and new value. Never commit to the default branch and never merge yourself.
+- No repo access, or a CMS that is hard to change? If the domain runs through the user's own Cloudflare account, call `get_fix_pack` with `platform: "cloudflare"` and deploy the Worker with the user's Cloudflare connection, after the user approves the values.
+- Once a fix is live, call `log_fix` with the old and new value of each change (keep the fix_log_id; offer a webhook). OnPage.dev then checks it stays live and sends the restore code when a deploy undoes it.
 - After the user deploys, call `rescan_and_compare` on the live URL to confirm what got fixed and catch anything new.
 - Then call `submit_indexnow` with the changed URLs so Bing and other IndexNow engines recrawl them. The first call returns a key file: add it to the folder served at the site root and ship it with the fix. If Google Search Console is connected, run URL Inspection on the changed URLs too.
 
 ## Prove it
-- A few weeks after the fixes are live, offer `measure_impact`: fetch Search Console, GA4 or Ahrefs numbers for 28 days before and after the fix date, for the changed pages and a few unchanged ones, and pass them with changed true or false.
+- A few weeks after the fixes are live, offer `measure_impact` with the `fix_log_id`: fetch Search Console, GA4 or Ahrefs numbers for 28 days before and after the fix date, for the changed pages and a few unchanged ones, and pass them with changed true or false.
 
 ## Hand it to the team
+- For a client update, call `get_fix_log` with `format: "report"` (and the agency name as `brand`).
 - When the user wants to share or plan the work, call `export_findings` with the url or audit_id. If Google Sheets, Slack, Notion or a task board tool is connected, send the output there; otherwise give the `=IMPORTDATA` formula.
 
 ## Whole sites and competitors
