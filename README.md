@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="52 tools" src="https://img.shields.io/badge/tools-52-4f46e5">
+  <img alt="53 tools" src="https://img.shields.io/badge/tools-53-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -357,6 +357,11 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **Debugs your GA4.** `check_ga4_tracking` captures the hits a page really sends to Google in a real browser, before and after accepting cookies and on a return visit: double counting, tracking before consent, a banner that never updates Consent Mode, debug mode left on, Universal Analytics leftovers.
+- **Makes AI read and quote you.** `ai_crawler_policy` writes robots.txt rules for 13 AI crawlers, `generate_llms_txt` and `validate_llms_txt` handle llms.txt, `find_answer_passages` shows whether a page answers well enough to be quoted, `check_entity_graph` checks that AI knows who is behind the site.
+- **Maps your topics and wins the snippet.** `map_topics` groups Search Console queries into topics with the page that owns each one, competing pages and gaps; `check_answer_format` shows the answer format (paragraph, list or table) that wins the featured snippet.
+- **Matches what ranks.** `match_intent` finds the page type Google rewards for a keyword, `check_readability` compares reading ease with the pages that rank, and `create_content_brief` turns them into a writing brief.
+- **Share previews that work.** `check_og_tags` loads the real share image and checks it against Facebook, LinkedIn and X, also as a free REST API.
 - **Local and linked.** `check_local_seo` checks LocalBusiness markup, NAP consistency, the Google Business Profile link and a page per location; `map_link_equity` maps internal PageRank and click depth and shows which important pages need more links.
 - **Ready for AI Mode.** `check_question_coverage` checks a page against the sub-questions AI search fans out for a topic, and shows the gaps where AI will cite someone else.
 - **Accessibility for the EAA.** `check_accessibility` maps every check to WCAG 2.1 AA, the standard behind the European Accessibility Act.
@@ -447,7 +452,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-52 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+53 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -460,6 +465,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_accessibility` | WCAG 2.1 AA report for the European Accessibility Act: every automated check mapped to its success criterion, contrast and reflow from the real-browser check, and what to test by hand | `9 of 11 criteria pass` |
 | `check_product_page` | Ecommerce product page: Product and Offer markup, price, stock, identifiers, shipping and return policy for merchant listings, variants, out-of-stock handling and filter URLs | `2 errors, 3 warnings` |
 | `check_consent` | Cookie banner and Google Consent Mode v2: which consent platform runs, whether the default comes before the Google tags, ad_user_data and ad_personalization | `Consent Mode v2: missing signals` |
+| `check_ga4_tracking` | GA4 debugger in a real browser: installed measurement IDs and GTM containers, then the hits sent on a first visit, after accepting cookies and on a return visit. Finds page_view firing twice, hits before consent, Consent Mode that never updates, debug mode on and Universal Analytics leftovers | `G-XXXX sends 2 page_views` |
 | `check_web_vitals` | Core Web Vitals from real Chrome users (CrUX): LCP, INP, CLS, FCP and TTFB on phone and desktop, rated good, needs improvement or poor, with what to fix | `Phone fails: LCP 3.1 s` |
 | `rescan_and_compare` | Scan again after a fix: score change, what got fixed, what is new | `46 → 94` |
 | `share_result` | A public before and after page to send to a client: score change, fixed and open issues. Not indexed, expires after 90 days | `46 → 94, shareable` |
