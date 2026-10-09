@@ -1,0 +1,13 @@
+name: Fix guard test
+on: workflow_dispatch
+permissions:
+  issues: write
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seoonpage/seo-mcp-server/guard@v1
+        id: g
+        with:
+          fix-log-id: "71117800-08a3-4895-8a0f-aa319c7187f8"
+      - run: echo "undone=${{ steps.g.outputs.undone }}"
