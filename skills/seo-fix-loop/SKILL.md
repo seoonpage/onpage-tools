@@ -38,7 +38,9 @@ Work in a loop: measure, fix in the source, measure again. Stop when the target 
 - A few weeks after the fixes are live, offer `measure_impact` with the `fix_log_id`: fetch Search Console, GA4 or Ahrefs numbers for 28 days before and after the fix date, for the changed pages and a few unchanged ones, and pass them with changed true or false.
 
 ## Hand it to the team
-- For a client update, call `get_fix_log` with `format: "report"` (and the agency name as `brand`).
+- For a client update, call `get_fix_log` with `format: "report"` (and the agency name as `brand`). If a GA4 tool that can write is connected, offer `format: "annotations"` to mark each fix day in GA4.
+- Offer the fix guard GitHub Action (`seoonpage/seo-mcp-server/guard@v1` with the fix_log_id) so undone fixes become an issue in the repo.
+- To keep an eye on a competitor, call `watch_page` with their page as `url` and the user's page as `competitor_of`.
 - When the user wants to share or plan the work, call `export_findings` with the url or audit_id. If Google Sheets, Slack, Notion or a task board tool is connected, send the output there; otherwise give the `=IMPORTDATA` formula.
 
 ## Whole sites and competitors

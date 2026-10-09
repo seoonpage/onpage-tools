@@ -360,6 +360,8 @@ What makes OnPage.dev different from every other SEO MCP server:
 - **Ships anywhere.** WordPress through your own connection, every other stack as a Git pull request with framework code. [More](#ships-as-a-pull-request).
 - **Real users and real bots.** `check_web_vitals` reads Core Web Vitals from real Chrome users; `analyze_logs` shows what Googlebot and AI crawlers actually crawl.
 - **Multilingual and trustworthy.** `check_hreflang` checks every language version and writes the corrected tag set; `check_trust_signals` checks the E-E-A-T signals across the whole site.
+- **Watches your competitors.** `watch_page` with `competitor_of` follows a competitor's page; when they add a section, structured data or a lot more text, the alert says what your page is missing and which tool fixes it.
+- **Every fix in your GA4 charts and your repo.** `get_fix_log` with `format: "annotations"` marks each fix day in GA4, and the [fix guard](#github-action-fix-guard) GitHub Action opens an issue with the restore code when a deploy undoes a fix.
 - **Debugs your GA4.** `check_ga4_tracking` captures the hits a page really sends to Google in a real browser, before and after accepting cookies and on a return visit: double counting, tracking before consent, a banner that never updates Consent Mode, debug mode left on, Universal Analytics leftovers.
 - **Makes AI read and quote you.** `ai_crawler_policy` writes robots.txt rules for 13 AI crawlers, `generate_llms_txt` and `validate_llms_txt` handle llms.txt, `find_answer_passages` shows whether a page answers well enough to be quoted, `check_entity_graph` checks that AI knows who is behind the site.
 - **Maps your topics and wins the snippet.** `map_topics` groups Search Console queries into topics with the page that owns each one, competing pages and gaps; `check_answer_format` shows the answer format (paragraph, list or table) that wins the featured snippet.
@@ -475,7 +477,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `export_findings` | A scan or site audit as an action plan: Google Sheets rows plus a CSV link for `=IMPORTDATA`, a Slack message (or webhook post), one task per issue for Linear, Jira, Asana or GitHub, and a Markdown checklist | `Sheet, Slack, 12 tasks` |
 | `measure_impact` | Before and after numbers from Search Console, GA4, Ahrefs or Semrush for the changed pages, against unchanged pages as a control group, with what changed per page from the watch history | `+66% clicks vs control` |
 | `log_fix` | Log fixes after they ship (page, field, old and new value, how it shipped). OnPage.dev checks about every 6 hours that each one is still live and posts the restore code to a webhook when a deploy undoes it | `4 fixes logged, all live` |
-| `get_fix_log` | The fix log: still live, undone or changed, the restore code, impact per fix from `measure_impact`, a rollback plan for fixes that did worse, and a client-ready monthly report without OnPage.dev branding | `1 undone, restore ready` |
+| `get_fix_log` | The fix log: still live, undone or changed, the restore code, impact per fix from `measure_impact`, a rollback plan for fixes that did worse, and a client-ready monthly report without OnPage.dev branding, plus GA4 annotations for every day fixes shipped | `1 undone, restore ready` |
 | `render_page` | The first screen on phone, tablet and desktop in a real browser: H1 and call to action position, cookie walls and pop-ups, tap targets, small text, low-contrast text, what scrolls sideways, mixed buttons, uneven spacing, layout shift, JavaScript-only content, snippet match. With screenshots | `CTA below the fold on phone` |
 
 ### Whole site and competitors
@@ -512,7 +514,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `check_entity_graph` | How the structured data describes who is behind a page, the way AI knowledge graphs read it: Organization, author and publisher as linked entities (`@id`), `sameAs` profiles that load, a match with the home page, and the missing JSON-LD with TODOs | `5 entities, 1 fix: no sameAs` |
 | `screen_reader_view` | How screen readers and browsing AI agents read the page: landmarks, heading outline, every link, button, image and field with its name, and what is missing | `3 links without a name` |
 | `compare_ai_citations` | AI citation counts per page from Ahrefs Brand Radar or another source, next to OnPage.dev checks: which checks the cited pages pass and the others fail, averages side by side, and what each skipped page should change | `Clear answer first: 100% of cited pages vs 0%` |
-| `watch_page` / `get_watch` / `unwatch` | A daily check for regressions: page down or redirected, noindex added, AI crawlers blocked, canonical or title changed, score drop, new and fixed issues. Private RSS feed, optional Slack or Discord webhook | `noindex added, alert sent` |
+| `watch_page` / `get_watch` / `unwatch` | A daily check for regressions: page down or redirected, noindex added, AI crawlers blocked, canonical or title changed, score drop, new and fixed issues. Private RSS feed, optional Slack or Discord webhook. With `competitor_of`: follows a competitor's page, and each new section, structured data type or length jump comes with the counter-move for your page | `noindex added, alert sent` |
 
 ### Launch and migration
 
