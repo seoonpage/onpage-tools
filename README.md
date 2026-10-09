@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://onpage.dev/mcp"><img alt="Hosted MCP server" src="https://img.shields.io/badge/MCP-hosted-4f46e5"></a>
   <img alt="Free, no API key" src="https://img.shields.io/badge/price-free%2C%20no%20key-0a7a43">
-  <img alt="67 tools" src="https://img.shields.io/badge/tools-67-4f46e5">
+  <img alt="70 tools" src="https://img.shields.io/badge/tools-70-4f46e5">
   <a href="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/seoonpage/seo-mcp-server/actions/workflows/test.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0b0f"></a>
 </p>
@@ -351,6 +351,7 @@ And three more jobs agents get asked to do every week:
 
 What makes OnPage.dev different from every other SEO MCP server:
 
+- **Everything in one chat, dashboards included.** Data, plan, the fix your agent deploys and the proof all happen in the chat. `create_dashboard_feed` checks a site's key pages every day, `get_dashboard_data` returns the history as clean tables that join with GA4 and Search Console, and `build_seo_dashboard` designs a live dashboard for Claude with a realtime GA4 block (active users per minute, pages, events) next to SEO health, fixes, speed and AI visibility.
 - **Takes action, not notes.** Your agent ships the fix itself: a pull request in your framework, a change through your own WordPress connection, or a Cloudflare Worker from `get_fix_pack` with `platform: "cloudflare"` that corrects the tags as the page is served, on any CMS on your own Cloudflare account. One step to roll back.
 - **Closes the loop for real.** `log_fix` records every fix that shipped. OnPage.dev checks about every 6 hours that each one is still live, sends the restore code to your webhook when a deploy undoes it, saves `measure_impact` results per fix with a rollback plan when one did worse, and `get_fix_log` writes the client report.
 - **Proves the result.** `measure_impact` compares before and after numbers against a control group of unchanged pages. [More](#the-whole-loop-inside-your-ai-agent).
@@ -461,7 +462,7 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 
 ## What it can do
 
-67 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
+70 tools in five jobs. Every result links to the full visual report on [onpage.dev](https://onpage.dev). Issues carry stable codes; the full list is in the `onpage://rules` resource.
 
 ### Audit and fix
 
@@ -498,6 +499,9 @@ Streamable HTTP transport at `https://onpage.dev/mcp`. JSON responses, no authen
 | `start_site_audit` | Audit up to 25 pages from the sitemap as a job. Returns an `audit_id` and the first progress | `3 of 25 scanned` |
 | `get_site_audit` | Continue until complete, then read the site-wide results: issues by code with affected pages, broken, orphan and duplicate pages | `25 pages, average 92` |
 | `map_link_equity` | Internal PageRank and click depth from a finished audit: pages the home page cannot reach, pages too deep, dead ends, strong pages that pass little on, links through redirects or to broken and noindex pages, and important pages (from Search Console or GA4) with too few links | `3 important pages need links` |
+| `create_dashboard_feed` | A daily check of the home page and up to 10 key pages, with the history kept: score, AI readiness, errors and warnings by code, AI crawler access and Core Web Vitals per week | `Feed live, 8 pages daily` |
+| `get_dashboard_data` | One dataset from a feed (overview, pages, issues, vitals, fixes, AI access) as a table with a date column and full URLs, ready to join with GA4, Search Console or their BigQuery exports | `30 days, 8 pages` |
+| `build_seo_dashboard` | A designed dashboard for Claude Dashboards or an artifact: realtime GA4 (users per minute, pages, events, countries), traffic, SEO health, fixes, speed and AI visibility, in light and dark | `Dashboard with 9 panels` |
 | `suggest_internal_links` | Which audited pages should link to a page, with anchor text. Works for a new page by topic | `3 links to add` |
 | `map_topics` | Topic clusters from Search Console rows: which page owns each topic, where pages compete, topics without their own page, pages without search demand and the internal links to add | `14 topics, 3 compete, 2 gaps` |
 | `prioritize_fixes` | Rank fixes by traffic impact, using numbers from your connected Search Console, GA4, Ahrefs or Semrush: blockers, low CTR, striking distance, missing keywords, strong links on a weak page. Falls back to severity | `#6 → top 3, ~336 clicks/mo` |
